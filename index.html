@@ -334,6 +334,25 @@
   image-rendering: pixelated;
   animation: floatHeart 1.4s infinite alternate;
 }
+.close-login-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #ffe600;
+  font-size: 22px;
+  cursor: pointer;
+  font-family: 'Press Start 2P', cursive;
+  z-index: 12;
+  text-shadow: 2px 2px 0 #000;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.close-login-btn:hover {
+  color: #ff4444;
+  transform: scale(1.1);
+}
 
 
     .pixel-heart:nth-child(1) { top: -10px; left: -30px; }
@@ -422,24 +441,27 @@
 
   <!-- Login Popup -->
   <!-- Login Popup -->
-  <div class="login-popup" id="login-popup">
-    <!-- Pixel Avatar -->
-    <div class="pixel-login">
-      <img src="./img/jerseypixel.png" alt="Pixel Guy" class="pixel-login-img" />
-      <div class="pixel-hearts">
-        <img src="./img/heart.png" class="pixel-heart" />
-       
-      </div>
-    </div>
+<div class="login-popup" id="login-popup">
+  <!-- ✖ Close Button -->
+  <button type="button" id="close-login" class="close-login-btn">✖</button>
 
-    <!-- Login Form -->
-    <form class="login-form">
-    <h2>🔑 LOGIN</h2>
-      <label for="password">Password:</label>
-      <input type="password" id="password" required />
-      <button type="submit">ENTER</button>
-    </form>
+  <!-- Pixel Avatar -->
+  <div class="pixel-login">
+    <img src="./img/jerseypixel.png" alt="Pixel Guy" class="pixel-login-img" />
+    <div class="pixel-hearts">
+      <img src="./img/heart.png" class="pixel-heart" />
+    </div>
   </div>
+
+  <!-- Login Form -->
+  <form class="login-form">
+    <h2>🔑 LOGIN</h2>
+    <label for="password">Password:</label>
+    <input type="password" id="password" required />
+    <button type="submit">ENTER</button>
+  </form>
+</div>
+
 
 
  
