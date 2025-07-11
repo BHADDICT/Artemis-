@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="icon" href="./img/head.png" type="image/png">
+<title>ARTEMIS </title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+ 
+      * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Press Start 2P', cursive;
+      background: radial-gradient(ellipse at center, #2e2660 0%, #1a143c 100%);
+      color: white;
+      padding: 40px;
+      overflow-x: hidden;
+    }
+    header nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 15px;
+      background-color: #201a40;
+      font-size: 10px;
+      text-transform: uppercase;
+      border-bottom: 2px solid #5b4ca0;
+    }
+    nav .active { color: #ffdb70; }
+    .cart-icon { position: relative; }
+    #cart-count {
+      position: absolute; top: -10px; right: -10px;
+      background: #ff4571; border-radius: 50%;
+      padding: 3px 6px; font-size: 10px;
+    }
+    main {
+      padding: 30px;
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      animation: fadeIn 1.5s ease;
+      flex-wrap: wrap;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .merchant-panel {
+      width: 250px;
+      background-color: #362d59;
+      border: 2px solid #784bbf;
+      padding: 15px;
+      border-radius: 10px;
+      animation: slideInLeft 1s ease;
+    }
+    @keyframes slideInLeft {
+      from { transform: translateX(-40px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .merchant-panel h2 { font-size: 12px; margin-bottom: 10px; text-align: center; }
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .item img {
+      width: 100%;
+      border: 2px solid transparent;
+      transition: transform 0.3s ease, border-color 0.3s;
+      cursor: pointer;
+    }
+    .item img:hover { transform: scale(1.05); border-color: #ffdb70; }
+    .character-panel {
+      width: 300px; height: 300px; position: relative;
+      animation: bounceIn 1.2s ease;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      perspective: 1000px;
+      background: rgba(0,0,0,0.2);
+    }
+    .character-img {
+      width: 100%; height: auto;
+      user-select: none; cursor: grab;
+      object-fit: contain;
+      transition: transform 0.1s linear;
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .product-panel {
+      background: rgba(16, 12, 46, 0.85);
+      border: 2px solid #4f3da9;
+      border-radius: 6px;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 12px #7358d9;
+      position: relative;
+      animation: slideInRight 1.3s ease;
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(40px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .tab {
+      padding: 6px 12px;
+      background: #2e2269;
+      border: 2px solid #7549ff;
+      border-radius: 6px 6px 0 0;
+      color: #fff;
+      font-size: 10px;
+      cursor: pointer;
+    }
+    .tab.active {
+      background: #ffd93d;
+      color: #222;
+      font-weight: bold;
+      box-shadow: inset 0 -3px 0 #333;
+    }
+    .item {
+  position: relative;
+  overflow: hidden;
+}
+.item img {
+  display: block;
+  width: 100%;
+  transition: opacity 0.3s;
+}
+.item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--hover-img);
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.item:hover::after {
+  opacity: 1;
+}
+
+    .product-title {
+      font-size: 15px;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 10px;
+      text-shadow: 0 0 3px #fff;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 12px;
+      color: #aaccff;
+      margin-bottom: 20px;
+    }
+    .description {
+      font-size: 10px;
+      color: #ddd;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .features, .passive {
+      font-size: 10px;
+      margin-bottom: 15px;
+    }
+    .features li::before { content: "★ "; color: #ffdf58; }
+    .passive { color: #ff72a5; }
+    .size-label { margin-bottom: 5px; font-size: 10px; }
+    .sizes {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+      justify-content: center;
+    }
+    .size-btn {
+      padding: 6px 10px;
+      background: #1e1743;
+      color: #fff;
+      border: 2px solid #aaa;
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .size-btn.active {
+      border: 2px solid #ffec78;
+      background: #ffeeaa;
+      color: #222;
+    }
+    .size-btn.disabled {
+      background: #333;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .price {
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: #ffe066;
+      text-align: center;
+    }
+    .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .add-cart-btn {
+      padding: 10px 20px;
+      background: linear-gradient(#1cc6ff, #199fe6);
+      border: 3px solid #ff5e00;
+      color: white;
+      font-size: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 5px #00d8ff;
+      text-shadow: 1px 1px 0 #000;
+    }
+    .shop-pay-btn {
+      background: #7a4cff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 10px;
+      cursor: pointer;
+    }
+    .more-options {
+      display: block;
+      text-align: center;
+      font-size: 9px;
+      color: #ccc;
+      text-decoration: underline;
+      margin-top: 10px;
+    }
+
+.pixel-cat-static {
+  position: fixed;
+  bottom: 10px;   /* Lower it closer to the bottom of the screen */
+  right: 30px;
+  width: 160px;   /* Increase size (adjust as needed) */
+  image-rendering: pixelated;
+  z-index: 10;
+  animation: floatUpDown 4s ease-in-out infinite;
+}
+
+.speech-bubble {
+  position: fixed;
+  bottom: 230px;
+  right: 50px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  padding: 8px 14px;
+  border-radius: 16px;
+  font-size: 10px;
+  font-style: italic;
+  border: 1px solid #aaa;
+  text-align: center;
+  animation: fadeInOut 4s infinite;
+  pointer-events: none;
+  max-width: 140px;
+  line-height: 1.4;
+  z-index: 11;
+}
+
+.speech-bubble::before,
+.speech-bubble::after {
+  content: "";
+  position: fixed;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #aaa;
+}
+
+.speech-bubble::before {
+  width: 10px;
+  height: 10px;
+  bottom: 200px;
+  right: 65px;
+}
+
+.speech-bubble::after {
+  width: 6px;
+  height: 6px;
+  bottom: 190px;
+  right: 70px;
+}
+
+
+@keyframes floatUpDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(0); }
+  10% { opacity: 1; transform: translateY(-5px); }
+  90% { opacity: 1; transform: translateY(-5px); }
+  100% { opacity: 0; transform: translateY(0); }
+}
+.cart-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  background: #241c47;
+  border-left: 3px solid #9e81ff;
+  padding: 20px;
+  z-index: 999;
+  overflow-y: auto;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.5);
+  animation: slideCartIn 0.4s ease;
+}
+
+@keyframes slideCartIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.cart-panel h2 {
+  font-size: 12px;
+  color: #ffe066;
+  margin-bottom: 15px;
+  text-align: center;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  background: #342a5f;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #6e4dc6;
+}
+
+.item-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  margin-right: 10px;
+  object-fit: cover;
+  border: 1px solid #999;
+}
+
+.cart-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #ffb3b3;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: 'Press Start 2P', cursive;
+  z-index: 1000;
+  transition: transform 0.2s ease;
+}
+
+.cart-close-btn:hover {
+  color: #ff4571;
+  transform: scale(1.2);
+}
+@media screen and (max-width: 600px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .merchant-panel, .character-panel {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .character-panel {
+    height: auto;
+  }
+
+  .character-img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.hamburger {
+  display: none;
+  font-size: 20px;
+  background: none;
+  color: #ffdb70;
+  border: none;
+  cursor: pointer;
+  font-family: 'Press Start 2P', cursive;
+}
+
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 240px;
+  height: 100vh;
+  background: #2e2269;
+  border-right: 2px solid #5b4ca0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  box-shadow: 4px 0 8px rgba(0,0,0,0.6);
+}
+
+.mobile-nav a {
+  color: white;
+  font-size: 10px;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-bottom: 1px solid #5b4ca0;
+  padding-bottom: 5px;
+}
+
+.mobile-nav a.active {
+  color: #ffd93d;
+}
+
+.mobile-nav.show {
+  left: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #ffb3b3;
+  align-self: flex-end;
+  cursor: pointer;
+  font-family: 'Press Start 2P', cursive;
+}
+.logo-header {
+  display: none; /* hidden by default */
+}
+
+@media screen and (max-width: 600px) {
+  .logo-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1; /* allows centering */
+  }
+
+  .logo-header img {
+    max-height: 80px;
+    height: auto;
+  }
+}
+
+
+@media screen and (max-width: 600px) {
+  .desktop-menu {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  nav {
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cart-icon {
+    margin-left: auto;
+  }
+
+  /* Stack panels vertically & center content */
+  .responsive-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* horizontal centering */
+    gap: 1rem;
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .character-panel,
+  .merchant-panel {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* center content inside */
+    text-align: center;
+  }
+
+  .character-panel img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin: 0 auto;
+    padding: 0;
+    justify-items: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .item img {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .product-panel {
+    width: 100%;
+    text-align: center;
+    padding: 0;
+  }
+
+  .tabs {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .sizes {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}
+.mobile-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.mobile-logo img {
+  max-height: 80px; /* adjust size as needed */
+  height: auto;
+}
+
+  </style>
+
+</head>
+<body>
+<header>
+  <nav>
+    <button class="hamburger" id="hamburger-btn">☰</button>
+    <span class="logo-header">
+      <img src="./img/logay1.gif" alt="ARTEMIS Logo">
+    </span>
+    <span class="desktop-menu">MAIN MENU</span>
+    <span class="desktop-menu">GUIDE</span>
+    <span class="desktop-menu active">
+      <img src="./img/logay1.gif" alt="ARTEMIS" style="height: 10em; vertical-align: middle;">
+    </span>
+    <span class="desktop-menu">QUEST</span>
+    <span class="desktop-menu">WORLD MAP</span>
+    <div class="cart-icon">🛒<span id="cart-count">0</span></div>
+  </nav>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <button class="close-btn" id="close-btn">✕</button>
+    <a href="#">MAIN MENU</a>
+    <a href="#">GUIDE</a>
+    <a href="#">QUEST</a>
+    <a href="#">WORLD MAP</a>
+  </div>
+</header>
+
+<main>
+  <div class="merchant-panel">
+    <h2>ARTEMIS</h2>
+    <div class="items-grid">
+      <!-- Your item divs here, same as you provided -->
+      <div class="item" data-title="ARTEMISMADE TEE DARK GREEN" data-subtitle="ARTEMIS Ⓐ" data-description="Forest-ready armor. Every stitch whispers adventure." data-features='["280GSM", "Double Face Fabric", "Rubber Print", "Artemis Label Tag", "Boxy Fitted"]' data-passive="🌿 Stealth +8%" data-price="$25.00" data-img="./img/pro4.png" data-hover="./img/pro5.png">
+        <img src="./img/pro4.png" alt="ARTEMISMADE TEE DARK GREEN" />
+      </div>
+      
+ <div class="item" 
+      data-title="ARTEMIS ORIGIN TSHIRT" 
+      data-subtitle="ARTEMIS Ⓐ"
+      data-description="Mark your legacy in bold hues. Designed for warmth and respect."
+     data-features='["280GSM", "Double Face Fabric", "Discharge Print", "Artemis Label Tag", "Boxy Fitted"]'
+      data-passive="🔥 Presence +10%"
+      data-price="$25.00"
+      data-img="./img/pro.png"
+       data-hover="./img/pro1.png">
+      <img src="./img/pro.png">
+    </div>
+ <!-- Item 2 -->
+    <div class="item" 
+      data-title="ARTEMIS BUTTON UP " 
+      data-subtitle="ARTEMIS Ⓐ"
+      data-description="Cool and crisp like morning tide. Tailored for dreamers chasing the sun."
+  data-features='["250GSM", "Double Face Fabric", "Rubber Print", "Artemis Label Tag", "Boxy Fitted"]'
+
+
+      data-passive="💧 Calm +5%"
+      data-price="$25.00"
+      data-img="./img/pro11.png"
+       data-hover="./img/pro10.png">
+      <img src="./img/pro11.png">
+    </div>
+<!-- Item 3 -->
+  
+
+    <!-- Item 4 -->
+    <div class="item" 
+      data-title="ARTEMISMADE TEE BABY BLUE" 
+      data-subtitle="ARTEMIS Ⓐ"
+      data-description="Armor for the modern mind. Every stitch guards your grind."
+      data-features='["Dual Pocket Detail", "Box Fit", "Stitched Logo", "Unisex", "Ships Early Sept"]'
+      data-passive="🛡️ Resilience +12%"
+      data-price="$25.00"
+      data-img="./img/pro7.png"
+       data-hover="./img/pro6.png">
+      <img src="./img/pro7.png">
+    </div>
+
+    <!-- Item 5 -->
+    <div class="item" 
+      data-title="ARTEMIS JACKET" 
+      data-subtitle="ARTEMIS Ⓐ"
+      data-description="Corporate vibes with combat energy. For boardrooms or battlefields."
+     data-features='["300GSM", "Canvas Fabric", "Discharge Print", "Artemis Label Tag", "Boxy Fitted", "Custom Pocket & Hidden Pocket"]'
+
+      data-passive="📈 CEO Aura +15%"
+      data-price="$25.00"
+      data-img="./img/pro8.png"
+       data-hover="./img/pro9.png">
+      <img src="./img/pro8.png">
+    </div>
+
+    <!-- Item 6 -->
+    <div class="item" 
+      data-title="ARTEMISMADE HOODIE" 
+      data-subtitle="ARTEMIS Ⓐ"
+      data-description="Cut from shadow and light. Built for speed, worn for style."
+   data-features='["400GSM", "Double Face Fabric", "Discharge Print", "Artemis Label Tag", "Boxy Fitted"]'
+
+
+      data-passive="⚡ Speed +9%"
+      data-price="$32.00"
+      data-img="./img/pro3.png"
+       data-hover="./img/pro2.png">
+      <img src="./img/pro3.png">
+    </div>
+ <div class="item" 
+      data-title="Artemis Visca barca" 
+      data-subtitle="ARTEMIS Ⓐ"
+      data-description="Cut from shadow and light. Built for speed, worn for style."
+      data-features='["Custom Pattern and Fitting", "Artemis Label Tag", "300GSM", "Embroidery, Rubber Print & Discharge Print", "Polo Collar"]'
+      data-passive="⚡ Speed +9%"
+      data-price="$30.00"
+      data-img="./img/jer.png"
+       data-hover="./img/jerback.png">
+      <img src="./img/jer.png">
+    </div>
+     <div class="item" 
+      data-title="Artemis Hala Madrid" 
+      data-subtitle="ARTEMIS Ⓐ"
+      data-description="Cut from shadow and light. Built for speed, worn for style."
+      data-features='["Custom Pattern and Fitting", "Artemis Label Tag", "300GSM", "Embroidery, Rubber Print & Discharge Print", "Polo Collar"]'
+
+      data-passive="⚡ Speed +9%"
+      data-price="$32.00"
+      data-img="./img/jerwhitefront.png"
+       data-hover="./img/jerwhite.png">
+      <img src="./img/jerwhitefront.png">
+    </div>
+
+    </div>
+  </div>
+
+  <div class="character-panel" data-img="./img/pro4.png" data-hover="./img/pro5.png">
+    <img src="./img/pro4.png" alt="Character" class="character-img" />
+  </div>
+
+  <div class="product-panel">
+    <div class="tabs">
+      <div class="tab active">🧿 Details</div>
+    </div>
+    <div class="product-title">Verdant Green</div>
+    <div class="subtitle">FOREST Jacket</div>
+    <ul class="features">
+      <li>Oversized Fit</li>
+      <li>Heavyweight Twill Fabric</li>
+      <li>Limited Edition</li>
+      <li>Ships Late July</li>
+    </ul>
+    <div class="passive">🌿 Stealth +8%</div>
+    <div class="sizes">
+      <button class="size-btn">S</button>
+      <button class="size-btn">M</button>
+      <button class="size-btn">L</button>
+      <button class="size-btn">XL</button>
+    </div>
+    <div class="price">$25.00</div>
+    <div class="buttons">
+      <button class="add-cart-btn">Add to cart</button>
+      <button class="shop-pay-btn">Buy Now</button>
+    </div>
+  </div>
+</main>
+
+<div class="cart cart-panel" id="cartPanel" style="display: none;">
+  <button class="cart-close-btn">✖️</button>
+  <h2 style="font-size: 18px; color: #ffe066; text-shadow: 2px 2px #000;">CART <sup id="cartSup">0</sup></h2>
+  <div id="cartItems"></div>
+  <div class="cart-summary">
+    <p style="color:#ccc; font-size:12px; text-align:center; margin-top: 10px;">
+      $2 shipping fee
+    </p>
+    <div class="subtotal" style="display:flex; justify-content:space-between; color:#ffe066; font-size:16px; padding:10px 0; border-top: 1px solid #9e81ff; border-bottom: 1px solid #9e81ff; margin: 10px 0;">
+      <strong>Subtotal</strong>
+      <span id="cartSubtotal">$0.00</span>
+    </div>
+    <button class="checkout-btn" style="
+      background:#9e81ff; 
+      color:#000; 
+      border:none; 
+      width:100%; 
+      padding:15px; 
+      font-family:'Press Start 2P', cursive; 
+      cursor:pointer;
+      font-size:14px;
+      margin-top:15px;
+      border-radius: 4px;
+      box-shadow: 0 4px #6e4dc6;
+    ">CHECK OUT</button>
+  </div>
+</div>
+
+<!-- Pixel cat and speech bubble -->
+<div id="catWrapper" style="position: relative; display: inline-block;">
+  <img src="./img/pixelo.png" class="pixel-cat-static" id="pixelCat" />
+  <div class="speech-bubble hidden" id="catBubble">Hello oun oun</div>
+</div>
+
+<script>
+  // Mobile menu toggles
+  const hamburger = document.getElementById("hamburger-btn");
+  const mobileNav = document.getElementById("mobile-nav");
+  const closeBtn = document.getElementById("close-btn");
+  hamburger.addEventListener("click", () => { mobileNav.classList.add("show"); });
+  closeBtn.addEventListener("click", () => { mobileNav.classList.remove("show"); });
+</script>
+
+<script>
+  // Pixel cat bubble animation on Add to cart
+  const catBubble = document.querySelector('.speech-bubble');
+  const pixelCat = document.querySelector('.pixel-cat-static');
+  const addCartBtn = document.querySelector('.add-cart-btn');
+
+  const bubbleOriginalRight = parseFloat(getComputedStyle(catBubble).right);
+  const catOriginalRight = parseFloat(getComputedStyle(pixelCat).right);
+  const shiftAmount = window.innerWidth * 0.6;
+
+  addCartBtn.addEventListener('click', () => {
+    catBubble.textContent = 'thank you oun ❤️';
+    catBubble.style.opacity = '1';
+    catBubble.style.right = (bubbleOriginalRight + shiftAmount) + 'px';
+    pixelCat.style.right = (catOriginalRight + shiftAmount) + 'px';
+
+    setTimeout(() => {
+      catBubble.style.opacity = '0';
+      setTimeout(() => {
+        catBubble.textContent = 'hello oun oun..';
+        catBubble.style.right = bubbleOriginalRight + 'px';
+        pixelCat.style.right = catOriginalRight + 'px';
+      }, 500);
+    }, 2000);
+  });
+
+  // Size button toggle
+  document.querySelectorAll('.size-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!btn.classList.contains('disabled')) {
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+    });
+  });
+</script>
+
+<script>
+  const cartItems = [];
+  const cartCount = document.getElementById("cart-count");
+  const cartPanel = document.getElementById("cartPanel");
+  const cartItemsContainer = document.getElementById("cartItems");
+  const cartSubtotal = document.getElementById("cartSubtotal");
+  const cartSup = document.getElementById("cartSup");
+
+  function renderCart() {
+    cartItemsContainer.innerHTML = '';
+    let subtotal = 0;
+
+    if (cartItems.length === 0) {
+      cartItemsContainer.innerHTML = `<p style="color:#fff; text-align:center;">Your cart is empty.</p>`;
+    } else {
+      cartItems.forEach((item, index) => {
+        subtotal += item.price * item.quantity;
+
+        const cartItem = document.createElement("div");
+        cartItem.classList.add("cart-item");
+        cartItem.innerHTML = `
+          <img src="${item.img}" alt="${item.title}" class="item-thumb">
+          <div class="item-details" style="flex:1;">
+            <h3 class="cart-item-title" style="color:#fff; font-size:12px;">${item.title}</h3>
+            <p style="color:#aaccff; font-size:10px;">Size: ${item.size}</p>
+            <p style="color:#ffe066; font-size:10px;">${item.priceFormatted}</p>
+            <div style="display:flex; align-items:center; gap:4px; margin-top:4px;">
+              <button class="qty-btn decrease" data-index="${index}" style="font-size:12px;">➖</button>
+              <span style="color:#fff; font-size:12px;">${item.quantity}</span>
+              <button class="qty-btn increase" data-index="${index}" style="font-size:12px;">➕</button>
+            </div>
+          </div>
+          <button class="remove-btn" data-index="${index}" style="background:none; border:none; font-size:16px; cursor:pointer;">🗑️</button>
+        `;
+        cartItemsContainer.appendChild(cartItem);
+      });
+    }
+
+    const shippingFee = cartItems.length > 0 ? 2 : 0;
+    const total = subtotal + shippingFee;
+
+    cartSubtotal.textContent = `$${total.toFixed(2)}`;
+    cartCount.textContent = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    cartSup.textContent = cartItems.length;
+
+    cartPanel.style.display = 'block';
+  }
+
+  // Add to Cart button handler
+  document.querySelector('.add-cart-btn').addEventListener('click', () => {
+    const title = document.querySelector('.product-title').textContent;
+    const priceStr = document.querySelector('.price').textContent.replace("$", "");
+    const price = parseFloat(priceStr);
+    const img = document.querySelector('.character-img').src;
+    const selectedSizeBtn = document.querySelector('.size-btn.active');
+    const size = selectedSizeBtn ? selectedSizeBtn.textContent : "N/A";
+
+    const existing = cartItems.find(item => item.title === title && item.size === size);
+
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cartItems.push({
+        title,
+        price,
+        priceFormatted: `$${price.toFixed(2)}`,
+        img,
+        size,
+        quantity: 1
+      });
+    }
+    renderCart();
+  });
+
+  // Cart icon click shows cart
+  document.querySelector('.cart-icon').addEventListener('click', () => {
+    renderCart();
+  });
+
+  // Close cart button
+  document.querySelector('.cart-close-btn').addEventListener('click', () => {
+    cartPanel.style.display = 'none';
+  });
+
+  // Cart quantity buttons & remove event delegation
+  cartItemsContainer.addEventListener('click', (e) => {
+    const index = parseInt(e.target.dataset.index);
+    if (e.target.classList.contains('remove-btn')) {
+      cartItems.splice(index, 1);
+      renderCart();
+    }
+    if (e.target.classList.contains('increase')) {
+      cartItems[index].quantity += 1;
+      renderCart();
+    }
+    if (e.target.classList.contains('decrease')) {
+      if (cartItems[index].quantity > 1) {
+        cartItems[index].quantity -= 1;
+      } else {
+        cartItems.splice(index, 1);
+      }
+      renderCart();
+    }
+  });
+
+  // Checkout button: Save cart to localStorage and go to checkout.html
+  document.querySelector('.checkout-btn').addEventListener('click', () => {
+    if (cartItems.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+    localStorage.setItem('cartData', JSON.stringify(cartItems));
+    window.location.href = 'check.html';
+  });
+</script>
+
+<script>
+  // Image hover swap for items grid
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.items-grid .item img').forEach(img => {
+      const item = img.closest('.item');
+      const originalSrc = item.dataset.img;
+      const hoverSrc = item.dataset.hover;
+
+      img.addEventListener('mouseenter', () => {
+        if (hoverSrc) img.src = hoverSrc;
+      });
+
+      img.addEventListener('mouseleave', () => {
+        if (originalSrc) img.src = originalSrc;
+      });
+    });
+
+    const charPanel = document.querySelector('.character-panel');
+    const charImg = charPanel.querySelector('.character-img');
+
+    charImg.addEventListener('mouseenter', () => {
+      const currentHover = charPanel.dataset.hover || charPanel.dataset.img;
+      if (currentHover) charImg.src = currentHover;
+    });
+
+    charImg.addEventListener('mouseleave', () => {
+      const currentImg = charPanel.dataset.img;
+      if (currentImg) charImg.src = currentImg;
+    });
+
+    // Update product info when clicking item
+    document.querySelectorAll('.items-grid .item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelector('.product-title').textContent = item.dataset.title || '';
+        document.querySelector('.subtitle').textContent = item.dataset.subtitle || '';
+
+        const descriptionEl = document.querySelector('.description');
+        if (descriptionEl) {
+          descriptionEl.textContent = item.dataset.description || '';
+        }
+
+        const featuresList = document.querySelector('.features');
+        if (featuresList) {
+          featuresList.innerHTML = '';
+          const features = JSON.parse(item.dataset.features || '[]');
+          features.forEach(f => {
+            const li = document.createElement('li');
+            li.textContent = f;
+            featuresList.appendChild(li);
+          });
+        }
+
+        document.querySelector('.passive').textContent = item.dataset.passive || '';
+        document.querySelector('.price').textContent = item.dataset.price || '';
+
+        if (charImg && item.dataset.img) {
+          charImg.src = item.dataset.img;
+          charPanel.dataset.img = item.dataset.img;
+          charPanel.dataset.hover = item.dataset.hover || item.dataset.img;
+        }
+      });
+    });
+
+    // Auto-click first item on load
+    const firstItem = document.querySelector('.items-grid .item');
+    if (firstItem) firstItem.click();
+  });
+</script>
+
+</body>
+</html>
