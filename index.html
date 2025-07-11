@@ -477,6 +477,10 @@
 
   <!-- Scripts -->
  <script>
+  document.getElementById('close-login').addEventListener('click', () => {
+  loginPopup.style.display = 'none';
+});
+
   const bgAudio = document.getElementById('bg-audio');
   bgAudio.volume = 0.3; // softer background volume
 
