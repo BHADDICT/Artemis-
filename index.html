@@ -391,7 +391,8 @@
 </head>
 <body>
 
- 
+ <audio id="bg-audio" src="./img/luffy.mp3" autoplay loop></audio>
+
   <div class="pixel-dialogue">
     <img src="./img/luuu.png" alt="Pixel Character" class="pixel-img" />
     <div class="speech-bubble">
@@ -453,7 +454,18 @@
   <footer>POWERED BY ARTEMISPHNOMPENH© 2025</footer>
 
   <!-- Scripts -->
- 
+ <script>
+  const bgAudio = document.getElementById('bg-audio');
+  bgAudio.volume = 0.3; // softer background volume
+
+  // Unmute on first user interaction
+  document.addEventListener('click', () => {
+    if (bgAudio.paused) {
+      bgAudio.play();
+    }
+  }, { once: true });
+</script>
+
  <script>
     document.getElementById('start-btn').addEventListener('click', function () {
       this.remove();
