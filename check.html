@@ -362,23 +362,64 @@
       document.getElementById("regionSelect").addEventListener("change", function () {
         document.getElementById("provinceInputContainer").style.display = this.value === "pr" ? "block" : "none";
       });
-      document.getElementById("payNow").addEventListener("click", function () {
-        const email = document.getElementById("email").value;
-        const firstName = document.getElementById("firstName").value;
-        const lastName = document.getElementById("lastName").value;
-        const instagram = document.getElementById("instagramInput").value;
-        const address = document.getElementById("address").value;
-        const phone = document.getElementById("phone").value;
-        const region = document.getElementById("regionSelect").value === "pr" ? document.getElementById("provinceInput").value : "Phnom Penh";
-        const cart = JSON.parse(localStorage.getItem("cartData")) || [];
-        if (cart.length === 0) { alert("🛒 Your cart is empty."); return; }
-        let subtotal = 0;
-        let rows = '';
-        cart.forEach(item => {
-          const totalItem = item.price * item.quantity;
-          subtotal += totalItem;
-          rows += `<tr><td>${item.title}</td><td>${item.size || '-'}</td><td>${item.quantity}</td><td>$${totalItem.toFixed(2)}</td></tr>`;
-        });
+document.getElementById("payNow").addEventListener("click", function () {
+  const email = document.getElementById("email").value.trim();
+  const firstName = document.getElementById("firstName").value.trim();
+  const lastName = document.getElementById("lastName").value.trim();
+  const instagram = document.getElementById("instagramInput").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const regionSelect = document.getElementById("regionSelect").value;
+  const provinceInput = document.getElementById("provinceInput").value.trim();
+  const region = regionSelect === "pr" ? provinceInput : "Phnom Penh";
+
+  const cart = JSON.parse(localStorage.getItem("cartData")) || [];
+  if (cart.length === 0) { 
+    alert("🛒 Your cart is empty."); 
+    return; 
+  }
+
+  // ✅ Required fields validation
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    alert("❌ Please enter a valid email address.");
+    return;
+  }
+  if (!firstName) {
+    alert("❌ Please enter your first name.");
+    return;
+  }
+  if (!lastName) {
+    alert("❌ Please enter your last name.");
+    return;
+  }
+  if (!instagram) {
+    alert("❌ Please enter your Instagram username.");
+    return;
+  }
+  if (!address) {
+    alert("❌ Please enter your full address.");
+    return;
+  }
+  if (!phone) {
+    alert("❌ Please enter your phone number.");
+    return;
+  }
+  if (!regionSelect) {
+    alert("❌ Please select your region.");
+    return;
+  }
+  if (regionSelect === "pr" && !provinceInput) {
+    alert("❌ Please enter your province.");
+    return;
+  }
+
+  let subtotal = 0;
+  let rows = '';
+  cart.forEach(item => {
+    const totalItem = item.price * item.quantity;
+    subtotal += totalItem;
+    rows += `<tr><td>${item.title}</td><td>${item.size || '-'}</td><td>${item.quantity}</td><td>$${totalItem.toFixed(2)}</td></tr>`;
+  });
         const total = subtotal + deliveryFee;
         const orderHTML = `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse;width:100%;max-width:600px;"><thead style="background:#eee;"><tr><th>Product</th><th>Size</th><th>Qty</th><th>Price</th></tr></thead><tbody>${rows}</tbody></table><br/><strong>Subtotal:</strong> $${subtotal.toFixed(2)}<br/><strong>Shipping:</strong> $${deliveryFee.toFixed(2)}<br/><strong>Total:</strong> $${total.toFixed(2)}<br/>`;
         document.querySelector(".checkout-left").style.display = "none";
@@ -394,7 +435,7 @@
     </div>
     <div>
  <p>Send the proof of payment to this Telegram:</p>
-<p><a href="https://t.me/artemis_contact" target="_blank">📩 @artemis_contact</a></p>
+<p><a href="https://t.me/Tmcartemis34" target="_blank">📩 @artemis_contact</a></p>
 
       <button id="doneBtn" style="display: block;">✅ Done</button>
     </div>
