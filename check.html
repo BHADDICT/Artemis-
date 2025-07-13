@@ -270,6 +270,23 @@
     background-color: #4caf50;
     display: none;
   }
+  .loader {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 
   @media (max-width: 768px) {
     .checkout-container {
@@ -393,19 +410,28 @@
             time--;
           }
         }, 1000);
-        setTimeout(() => {
-          document.getElementById("doneBtn").addEventListener("click", function () {
-            emailjs.send("service_wuj46zm", "template_3xm1tyg", {
-              user_email: email,
-              user_name: `${firstName} ${lastName}`,
-              message_html: `<strong>Email:</strong> ${email}<br/><strong>Name:</strong> ${firstName} ${lastName}<br/><strong>Instagram:</strong> ${instagram}<br/><strong>Address:</strong> ${address}<br/><strong>Phone:</strong> ${phone}<br/><strong>Region:</strong> ${region}<br/><br/>${orderHTML}`
-            }).then(() => {
-              alert("✅ Order sent successfully!");
-              localStorage.removeItem("cartData");
-              window.location.href = "thankyou.html";
-            }, () => { alert("❌ Failed to send. Please try again."); });
-          });
-        }, 300);
+ setTimeout(() => {
+  const doneBtn = document.getElementById("doneBtn");
+  doneBtn.addEventListener("click", function () {
+    doneBtn.disabled = true;
+    doneBtn.innerHTML = "Sending... <span class='loader'></span>";
+
+    emailjs.send("service_wuj46zm", "template_3xm1tyg", {
+      user_email: email,
+      user_name: `${firstName} ${lastName}`,
+      message_html: `<strong>Email:</strong> ${email}<br/><strong>Name:</strong> ${firstName} ${lastName}<br/><strong>Instagram:</strong> ${instagram}<br/><strong>Address:</strong> ${address}<br/><strong>Phone:</strong> ${phone}<br/><strong>Region:</strong> ${region}<br/><br/>${orderHTML}`
+    }).then(() => {
+      alert("✅ Order sent successfully!");
+      localStorage.removeItem("cartData");
+      window.location.href = "thankyou.html";
+    }, () => {
+      alert("❌ Failed to send. Please try again.");
+      doneBtn.disabled = false;
+      doneBtn.innerHTML = "✅ Done";
+    });
+  });
+}, 300);
+
       });
       renderOrderSummary();
     });
