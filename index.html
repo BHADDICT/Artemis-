@@ -25,17 +25,16 @@
       height: 100%;
       overflow: hidden;
     }
+.background-video {
+  position: fixed;       /* stays fixed during scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* ensures it covers entire screen without distortion */
+  z-index: -1;           /* sends it behind your content */
+}
 
-    video.background-video {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -1;
-      filter: brightness(0.7);
-    }
     
     .overlay {
       position: absolute;
@@ -424,12 +423,8 @@
   </div>
 
   <!-- Background Video -->
-  <video autoplay muted loop playsinline class="background-video">
-  <source src="./img/artemis.MP4" type="video/mp4">
+  <img src="./img/bg.JPEG" alt="Background image" class="background-video" />
 
-
-    Your browser does not support the video tag.
-  </video>
 
   <!-- Logo & Start Button -->
   <div class="overlay">
