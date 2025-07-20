@@ -452,6 +452,25 @@
 .logo-header {
   display: none; /* hidden by default */
 }
+.size-btn.sold-out {
+  position: relative;
+  background: #333 !important;
+  color: #888 !important;
+  border-color: #555 !important;
+  cursor: not-allowed !important;
+  opacity: 0.5;
+}
+
+.size-btn.sold-out::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background: red;
+  transform: rotate(-20deg);
+}
 
 @media screen and (max-width: 600px) {
   .logo-header {
@@ -631,9 +650,19 @@
     <h2>ARTEMIS</h2>
     <div class="items-grid">
       <!-- Your item divs here, same as you provided -->
-      <div class="item" data-title="ARTEMISMADE TEE DARK GREEN" data-subtitle="ARTEMIS Ⓐ" data-description="Forest-ready armor. Every stitch whispers adventure." data-features='["280GSM", "Double Face Fabric", "Rubber Print", "Artemis Label Tag", "Boxy Fitted"]' data-passive="🌿 Stealth +8%" data-price="$25.00" data-img="./img/pro4.png" data-hover="./img/pro5.png">
-        <img src="./img/pro4.png" alt="ARTEMISMADE TEE DARK GREEN" />
-      </div>
+   <div class="item" 
+  data-title="ARTEMISMADE TEE DARK GREEN" 
+  data-subtitle="ARTEMIS Ⓐ" 
+  data-description="Forest-ready armor. Every stitch whispers adventure."
+  data-features='["280GSM", "Double Face Fabric", "Rubber Print", "Artemis Label Tag", "Boxy Fitted"]' 
+  data-passive="🌿 Stealth +8%" 
+  data-price="$25.00" 
+  data-img="./img/pro4.png" 
+  data-hover="./img/pro5.png"
+  data-soldout='["S","M"]'>
+  <img src="./img/pro4.png" alt="ARTEMISMADE TEE DARK GREEN" />
+</div>
+
       
  <div class="item" 
       data-title="ARTEMIS ORIGIN TSHIRT" 
@@ -795,6 +824,38 @@
   <img src="./img/pixelo.png" class="pixel-cat-static" id="pixelCat" />
   <div class="speech-bubble hidden" id="catBubble">Hello oun oun</div>
 </div>
+<script>
+// Mark sold-out sizes dynamically for Item 1
+document.addEventListener('DOMContentLoaded', () => {
+  const sizeButtons = document.querySelectorAll('.size-btn');
+  const items = document.querySelectorAll('.items-grid .item');
+
+  items.forEach(item => {
+    item.addEventListener('click', () => {
+      // Clear all size buttons before re-applying sold out
+      sizeButtons.forEach(btn => {
+        btn.classList.remove('sold-out');
+        btn.classList.remove('disabled');
+      });
+
+      // Check if this item has sold out sizes in data-soldout
+      const soldOutSizes = JSON.parse(item.dataset.soldout || '[]');
+
+      // Apply sold-out styling and disable for matching sizes
+      sizeButtons.forEach(btn => {
+        if (soldOutSizes.includes(btn.textContent.trim())) {
+          btn.classList.add('sold-out');
+          btn.classList.add('disabled');
+        }
+      });
+    });
+  });
+
+  // Trigger the click on the first item to apply its sold-out state immediately
+  const firstItem = document.querySelector('.items-grid .item');
+  if (firstItem) firstItem.click();
+});
+</script>
 
 <script>
   // Mobile menu toggles
