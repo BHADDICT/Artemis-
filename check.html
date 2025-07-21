@@ -378,40 +378,77 @@ document.getElementById("payNow").addEventListener("click", function () {
     alert("🛒 Your cart is empty."); 
     return; 
   }
+// ✅ Required fields validation
+if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  alert("❌ Please enter a valid email address.");
+  return;
+}
 
-  // ✅ Required fields validation
-  if (!email || !/\S+@\S+\.\S+/.test(email)) {
-    alert("❌ Please enter a valid email address.");
-    return;
-  }
-  if (!firstName) {
-    alert("❌ Please enter your first name.");
-    return;
-  }
-  if (!lastName) {
-    alert("❌ Please enter your last name.");
-    return;
-  }
-  if (!instagram) {
-    alert("❌ Please enter your Instagram username.");
-    return;
-  }
-  if (!address) {
-    alert("❌ Please enter your full address.");
-    return;
-  }
-  if (!phone) {
-    alert("❌ Please enter your phone number.");
-    return;
-  }
-  if (!regionSelect) {
-    alert("❌ Please select your region.");
-    return;
-  }
-  if (regionSelect === "pr" && !provinceInput) {
-    alert("❌ Please enter your province.");
-    return;
-  }
+// 🚫 Block disposable/spam email domains
+const blockedEmailDomains = ["mailinator.com", "tempmail.com", "10minutemail.com", "guerrillamail.com"];
+const emailDomain = email.split("@")[1]?.toLowerCase();
+if (blockedEmailDomains.includes(emailDomain)) {
+  alert("❌ Temporary or spam email addresses are not allowed.");
+  return;
+}
+
+if (!firstName.trim()) {
+  alert("❌ Please enter your first name.");
+  return;
+}
+if (!lastName.trim()) {
+  alert("❌ Please enter your last name.");
+  return;
+}
+if (!instagram.trim()) {
+  alert("❌ Please enter your Instagram username.");
+  return;
+}
+if (!address.trim()) {
+  alert("❌ Please enter your full address.");
+  return;
+}
+
+// ✅ Phone validation (basic)
+const phonePattern = /^\+?\d{7,15}$/; // Accepts +country code and 7–15 digits
+if (!phonePattern.test(phone)) {
+  alert("❌ Please enter a valid phone number.");
+  return;
+}
+
+const cleanedPhone = phone.replace(/\D/g, "");
+const repeatedDigits = /^(\d)\1+$/;
+const sequentialPatterns = [
+  "0123456789",
+  "123456789",
+  "987654321",
+  "012345678",
+  "12345678",
+  "98765432",
+];
+const tooManyZeros = /0{5,}/;
+
+const isSequential = sequentialPatterns.some(seq => cleanedPhone.startsWith(seq));
+
+if (
+  repeatedDigits.test(cleanedPhone) ||
+  tooManyZeros.test(cleanedPhone) ||
+  isSequential ||
+  cleanedPhone.includes("0000000")
+) {
+  alert("❌ Please enter a real phone number dumbass.");
+  return;
+}
+
+
+if (!regionSelect) {
+  alert("❌ Please select your region.");
+  return;
+}
+if (regionSelect === "pr" && !provinceInput.trim()) {
+  alert("❌ Please enter your province.");
+  return;
+}
 
   let subtotal = 0;
   let rows = '';
