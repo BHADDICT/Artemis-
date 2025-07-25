@@ -509,10 +509,10 @@
     document.querySelector('.login-form').addEventListener('submit', (e) => {
       e.preventDefault();
       const password = document.getElementById('password').value;
-      if (password === "Elclassico") {
+      if (password === "TCM") {
         alert("Access granted.");
         loginPopup.style.display = 'none';
-        window.location.href = "product.html";
+        window.location.href = "ArtemisStock.html"; // Redirect to stock management page
       } else {
         alert("Incorrect password. Try again.");
       }
