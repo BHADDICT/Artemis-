@@ -148,7 +148,7 @@ h1 {
 <form class="stock-form" id="stockForm"></form>
 
 <script>
-emailjs.init("1uThHFmx4SJgzaxOh");
+emailjs.init("1uThHFmx4SJgzaxOh"); // Your public EmailJS key
 
 const sizes = ["S", "M", "L", "XL"];
 const products = [
@@ -164,29 +164,24 @@ const products = [
 
 function updateDateTime() {
   const now = new Date();
-  const options = {
-    timeZone: 'Asia/Phnom_Penh',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
-  };
-  document.getElementById('currentDateTime').textContent =
-    "📅 " + new Intl.DateTimeFormat('en-GB', options).format(now);
-  document.getElementById('lastUpdated').textContent =
-    "🕒 Last updated: " + now.toLocaleString('en-GB', { timeZone: 'Asia/Phnom_Penh' });
+  const options = { timeZone: 'Asia/Phnom_Penh', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+  document.getElementById('currentDateTime').textContent = "📅 " + new Intl.DateTimeFormat('en-GB', options).format(now);
+  document.getElementById('lastUpdated').textContent = "🕒 Last updated: " + now.toLocaleString('en-GB', { timeZone: 'Asia/Phnom_Penh' });
 }
 setInterval(updateDateTime, 1000);
 updateDateTime();
 
 if (!localStorage.getItem("artemisStock")) {
-  const savedStock = {};
-  products.forEach(product => {
-    savedStock[product.name] = { S: 0, M: 0, L: 0, XL: 0 };
-  });
+  const savedStock = {
+    "ARTEMISMADE TEE DARK GREEN": { S: 0, M: 0, L: 4, XL: 3 },
+    "ARTEMIS ORIGIN TSHIRT": { S: 6, M: 0, L: 1, XL: 3 },
+    "ARTEMIS BUTTON UP": { S: 1, M: 4, L: 3, XL: 0 },
+    "ARTEMISMADE TEE BABY BLUE": { S: 1, M: 0, L: 2, XL: 1 },
+    "ARTEMIS JACKET": { S: 0, M: 6, L: 4, XL: 2 },
+    "ARTEMISMADE HOODIE": { S: 6, M: 3, L: 4, XL: 2 },
+    "Artemis Visca barca": { S: 3, M: 10, L: 23, XL: 0 },
+    "Artemis Hala Madrid": { S: 4, M: 11, L: 25, XL: 3 },
+  };
   localStorage.setItem("artemisStock", JSON.stringify(savedStock));
 }
 
