@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ARTEMIS STOCK MANAGEMENT</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <style>
 body {
   font-family: 'Press Start 2P', cursive;
@@ -90,7 +89,7 @@ h1 {
 }
 .save-btn {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 10px;
   background: #7a4cff;
   color: white;
   border: none;
@@ -107,26 +106,6 @@ h1 {
   .product-card {
     flex-direction: column;
     align-items: center;
-  }
-  .product-image {
-    width: 100%;
-    max-width: 250px;
-  }
-  .product-header {
-    flex-direction: column;
-    align-items: center;
-    font-size: 12px;
-  }
-  .size-group {
-    font-size: 10px;
-  }
-  .stock-input {
-    width: 60px;
-    font-size: 10px;
-  }
-  .save-btn {
-    font-size: 12px;
-    padding: 12px;
   }
 }
 </style>
@@ -148,8 +127,7 @@ h1 {
 <form class="stock-form" id="stockForm"></form>
 
 <script>
-emailjs.init("1uThHFmx4SJgzaxOh");
-
+// Sizes and products
 const sizes = ["S", "M", "L", "XL"];
 const products = [
   { name: "ARTEMISMADE TEE DARK GREEN", image: "./img/pro5.png" },
@@ -162,28 +140,27 @@ const products = [
   { name: "Artemis Hala Madrid", image: "./img/jerwhitefront.png" },
 ];
 
+// Live clock
 function updateDateTime() {
   const now = new Date();
-  const options = { timeZone: 'Asia/Phnom_Penh', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-  document.getElementById('currentDateTime').textContent = "📅 " + new Intl.DateTimeFormat('en-GB', options).format(now);
-  document.getElementById('lastUpdated').textContent = "🕒 Last updated: " + now.toLocaleString('en-GB', { timeZone: 'Asia/Phnom_Penh' });
+  document.getElementById('currentDateTime').textContent = "📅 " + now.toLocaleString();
+  document.getElementById('lastUpdated').textContent = "🕒 Last updated: " + now.toLocaleString();
 }
 setInterval(updateDateTime, 1000);
 updateDateTime();
 
-if (!localStorage.getItem("artemisStock")) {
-  const savedStock = {
-    "ARTEMISMADE TEE DARK GREEN": { S: 0, M: 0, L: 4, XL: 3 },
-    "ARTEMIS ORIGIN TSHIRT": { S: 6, M: 0, L: 1, XL: 3 },
-    "ARTEMIS BUTTON UP": { S: 1, M: 4, L: 3, XL: 0 },
-    "ARTEMISMADE TEE BABY BLUE": { S: 1, M: 0, L: 2, XL: 1 },
-    "ARTEMIS JACKET": { S: 0, M: 6, L: 4, XL: 2 },
-    "ARTEMISMADE HOODIE": { S: 6, M: 3, L: 4, XL: 2 },
-    "Artemis Visca barca": { S: 3, M: 10, L: 23, XL: 0 },
-    "Artemis Hala Madrid": { S: 4, M: 11, L: 25, XL: 3 },
-  };
-  localStorage.setItem("artemisStock", JSON.stringify(savedStock));
-}
+// Initial stock (replace with your live checkout deduction logic later)
+const savedStock = {
+  "ARTEMISMADE TEE DARK GREEN": { S: 0, M: 0, L: 4, XL: 3 },
+  "ARTEMIS ORIGIN TSHIRT": { S: 6, M: 0, L: 1, XL: 3 },
+  "ARTEMIS BUTTON UP": { S: 1, M: 4, L: 3, XL: 0 },
+  "ARTEMISMADE TEE BABY BLUE": { S: 1, M: 0, L: 2, XL: 1 },
+  "ARTEMIS JACKET": { S: 0, M: 6, L: 4, XL: 2 },
+  "ARTEMISMADE HOODIE": { S: 6, M: 3, L: 4, XL: 2 },
+  "Artemis Visca barca": { S: 3, M: 10, L: 23, XL: 0 },
+  "Artemis Hala Madrid": { S: 4, M: 11, L: 25, XL: 3 },
+};
+localStorage.setItem("artemisStock", JSON.stringify(savedStock));
 
 function renderForm() {
   const stockForm = document.getElementById('stockForm');
@@ -231,44 +208,26 @@ function renderForm() {
   const saveBtn = document.createElement('button');
   saveBtn.className = 'save-btn';
   saveBtn.type = 'button';
-  saveBtn.textContent = 'Save & Email Stock';
+  saveBtn.textContent = '💾 Save';
   saveBtn.onclick = saveStock;
   stockForm.appendChild(saveBtn);
 }
 
+// Save stock changes
 function saveStock() {
   const updated = {};
-  let emailContent = `<h2>📜 Artemis Stock Report</h2>
-  <p><strong>Sent:</strong> ${new Date().toLocaleString('en-GB', { timeZone: 'Asia/Phnom_Penh' })}</p>
-  <table border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse; font-family: monospace; width: 100%;">
-    <thead><tr style="background: #7549ff; color: white;"><th>Product</th><th>Size</th><th>Quantity</th></tr></thead><tbody>`;
-
   products.forEach((product, i) => {
     updated[product.name] = {};
     sizes.forEach(size => {
       const input = document.getElementById(`stock-${i}-${size}`);
-      const qty = parseInt(input.value) || 0;
-      updated[product.name][size] = qty;
-      const qtyDisplay = qty === 0 ? "❌ SOLD OUT" : qty;
-      const style = qty === 0 ? "color: #ff5c5c; font-weight: bold;" : "";
-      emailContent += `<tr><td>${product.name}</td><td>${size}</td><td style="${style}">${qtyDisplay}</td></tr>`;
+      updated[product.name][size] = parseInt(input.value) || 0;
     });
   });
-
-  emailContent += "</tbody></table>";
   localStorage.setItem('artemisStock', JSON.stringify(updated));
-
-  emailjs.send("service_yd2isl8", "template_e4oilzb", {
-    subject: "Artemis Stock Report",
-    message_html: emailContent
-  }).then(() => {
-    alert("✅ Stock updated and emailed successfully.");
-    location.reload();
-  }).catch(() => {
-    alert("❌ Failed to send email. Please try again.");
-  });
+  alert("✅ Stock saved successfully.");
 }
 
+// Auto-refresh when stock updates in another tab
 window.addEventListener("storage", function(event) {
   if (event.key === "artemisStock") {
     location.reload();
