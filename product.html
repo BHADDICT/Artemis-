@@ -1049,7 +1049,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (currentImg) charImg.src = currentImg;
     });
 
-    // Update product info when clicking item
+   
     document.querySelectorAll('.items-grid .item').forEach(item => {
       item.addEventListener('click', () => {
         document.querySelector('.product-title').textContent = item.dataset.title || '';
