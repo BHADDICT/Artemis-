@@ -529,7 +529,7 @@ document.getElementById("orderSummary").innerHTML = `
 
 document.getElementById("payByABA").addEventListener("click", () => {
   const now = Date.now();
-  window.location.href = "abapay://scanqr";
+  window.location.href = "abapay://";
 
   setTimeout(() => {
     if (Date.now() - now < 1200) {
