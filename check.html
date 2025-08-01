@@ -502,23 +502,31 @@ if (isAfterSundayFivePM) {
       ${discountAmountFixed > 0 ? `<br/><strong>Discount:</strong> -$${discountAmountFixed.toFixed(2)}` : ""}
       <br/><strong>Total:</strong> $${total.toFixed(2)}<br/>`;
 
-    // SWITCH TO PAYMENT QR SCREEN
-    document.querySelector(".checkout-left").style.display = "none";
-    document.getElementById("orderSummary").innerHTML = `
-      <div class="payment-card-modern">
-        <div class="countdown-timer" id="countdown">06:00</div>
-        <div class="store-name">artemisphnompenh</div>
-        <div class="price-label">$</div>
-        <div class="total-amount">${total.toFixed(2)}</div>
-        <div class="qr-wrapper">
-          <img src="./img/bank.jpg" alt="QR Code" style="width:300px;height:auto;" />
-        </div>
-        <div>
-          <p>Send the proof of payment to this Telegram:</p>
-          <p><a href="https://t.me/Tmcartemis34" target="_blank">📩 @artemis_contact</a></p>
-          <button id="doneBtn" style="display:block;">✅ Done</button>
-        </div>
-      </div>`;
+   // SWITCH TO PAYMENT QR SCREEN
+document.querySelector(".checkout-left").style.display = "none";
+document.getElementById("orderSummary").innerHTML = `
+  <div class="payment-card-modern">
+    <div class="countdown-timer" id="countdown">06:00</div>
+    <div class="store-name">artemisphnompenh</div>
+    <div class="price-label">$</div>
+    <div class="total-amount">${total.toFixed(2)}</div>
+
+    <div class="qr-wrapper" style="text-align:center;">
+      <p>Scan the QR to Pay with ABA</p>
+      <img src="./img/bank.jpg" alt="ABA QR Code" style="width:300px;height:auto;" />
+      <br><br>
+      <a href="abapay://scanqr" target="_blank">
+        <button style="padding:10px 20px; font-size:16px;">Pay by ABA</button>
+      </a>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <p>Send the proof of payment to this Telegram:</p>
+      <p><a href="https://t.me/Tmcartemis34" target="_blank">📩 @artemis_contact</a></p>
+      <button id="doneBtn" style="display:block;">✅ Done</button>
+    </div>
+  </div>`;
+
 
     // START COUNTDOWN
     let time = 360;
