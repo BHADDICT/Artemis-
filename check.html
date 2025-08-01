@@ -376,7 +376,7 @@ function renderOrderSummary() {
   const applyBtn = document.getElementById("applyPromoBtn");
   const promoInput = document.getElementById("promoCodeInput");
 
-  // TESTING: Hardcoded Cambodia time to Friday 09:50
+ 
   const cambodiaTime = new Date();
   cambodiaTime.setHours(9, 50, 0, 0); // 09:50:00
   cambodiaTime.setDate(cambodiaTime.getDate() - ((cambodiaTime.getDay() + 2) % 7)); // Set to Friday
