@@ -332,9 +332,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-
-window.addEventListener("load", function () {
-  emailjs.init("z38jUWYxRvfJS_RC8"); 
+document.addEventListener("DOMContentLoaded", function () {
+  emailjs.init("z38jUWYxRvfJS_RC8");
   const deliveryFee = 2.0;
   let discountAmountFixed = 0;
 
@@ -377,56 +376,40 @@ window.addEventListener("load", function () {
     const applyBtn = document.getElementById("applyPromoBtn");
     const promoInput = document.getElementById("promoCodeInput");
 
-    // --------- PROMO CODE DISABLE LOGIC ---------
+    // Promo code time logic
     const cambodiaTime = new Date();
+    const day = cambodiaTime.getDay();
+    const hour = cambodiaTime.getHours();
+    const minute = cambodiaTime.getMinutes();
+    const isAfterSundayFivePM = day === 0 && (hour > 17 || (hour === 17 && minute >= 0));
 
-    // === FOR TESTING ONLY: uncomment below to force time to Friday 22:10 Cambodia time ===
-    // cambodiaTime.setHours(22, 10, 0, 0);
-    // cambodiaTime.setDate(cambodiaTime.getDate() - ((cambodiaTime.getDay() + 2) % 7));
-    // === END TESTING ===
-const day = cambodiaTime.getDay(); // Sunday=0, Monday=1, ..., Saturday=6
-const hour = cambodiaTime.getHours();
-const minute = cambodiaTime.getMinutes();
-
-// Disable promo code after Sunday 5:00 PM Cambodia time
-const isAfterSundayFivePM = day === 0 && (hour > 17 || (hour === 17 && minute >= 0));
-
-if (isAfterSundayFivePM) {
-  applyBtn.disabled = true;
-  applyBtn.title = "Promo codes are disabled after 5:00 PM on Sundays (Cambodia time).";
-  promoInput.disabled = true;
-} else {
-  applyBtn.disabled = false;
-  promoInput.disabled = false;
-
-  
-  const newApplyBtn = applyBtn.cloneNode(true);
-  applyBtn.parentNode.replaceChild(newApplyBtn, applyBtn);
-
-  newApplyBtn.addEventListener("click", function () {
     if (isAfterSundayFivePM) {
-      alert("Promo codes cannot be applied after 5:00 PM on Sundays (Cambodia time).");
-      return;
-    }
-    const code = promoInput.value.trim().toLowerCase();
-
-    if (code === "minus5") {
-      discountAmountFixed = 5;
-      alert("Promo applied! $5 discount.");
+      applyBtn.disabled = true;
+      applyBtn.title = "Promo codes are disabled after 5:00 PM on Sundays (Cambodia time).";
+      promoInput.disabled = true;
     } else {
-      discountAmountFixed = 0;
-      alert("Invalid promo code.");
-    }
-    renderOrderSummary();
-  });
-}
+      applyBtn.disabled = false;
+      promoInput.disabled = false;
 
+      const newApplyBtn = applyBtn.cloneNode(true);
+      applyBtn.parentNode.replaceChild(newApplyBtn, applyBtn);
+
+      newApplyBtn.addEventListener("click", function () {
+        const code = promoInput.value.trim().toLowerCase();
+        if (code === "minus5") {
+          discountAmountFixed = 5;
+          alert("Promo applied! $5 discount.");
+        } else {
+          discountAmountFixed = 0;
+          alert("Invalid promo code.");
+        }
+        renderOrderSummary();
+      });
+    }
   }
 
-  // call once on page load
+  // Call on load
   renderOrderSummary();
-
-  // Other page scripts below:
 
   document.getElementById("regionSelect").addEventListener("change", function () {
     document.getElementById("provinceInputContainer").style.display = this.value === "pr" ? "block" : "none";
@@ -449,7 +432,6 @@ if (isAfterSundayFivePM) {
       return;
     }
 
-    // VALIDATION
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       alert("❌ Please enter a valid email address.");
       return;
@@ -461,27 +443,25 @@ if (isAfterSundayFivePM) {
       return;
     }
 
-    if (!firstName) { alert("❌ Enter your first name."); return; }
-    if (!lastName) { alert("❌ Enter your last name."); return; }
-    if (!instagram) { alert("❌ Enter your Instagram username."); return; }
-    if (!address) { alert("❌ Enter your full address."); return; }
+    if (!firstName) return alert("❌ Enter your first name.");
+    if (!lastName) return alert("❌ Enter your last name.");
+    if (!instagram) return alert("❌ Enter your Instagram username.");
+    if (!address) return alert("❌ Enter your full address.");
 
     const phonePattern = /^\+?\d{7,15}$/;
     const cleanedPhone = phone.replace(/\D/g, "");
     const repeatedDigits = /^(\d)\1+$/;
     const sequential = ["0123456789", "123456789", "987654321"].some(seq => cleanedPhone.startsWith(seq));
     if (!phonePattern.test(phone) || repeatedDigits.test(cleanedPhone) || sequential || /0{5,}/.test(cleanedPhone)) {
-      alert("❌ Please enter a valid phone number.");
-      return;
+      return alert("❌ Please enter a valid phone number.");
     }
 
-    if (!regionSelect) { alert("❌ Select your region."); return; }
+    if (!regionSelect) return alert("❌ Select your region.");
     if (regionSelect === "pr" && !provinceInput.trim()) {
-      alert("❌ Enter your province.");
-      return;
+      return alert("❌ Enter your province.");
     }
 
-    // BUILD ORDER TABLE HTML
+    // Build order HTML
     let subtotal = 0;
     let rows = "";
     cart.forEach(item => {
@@ -501,50 +481,45 @@ if (isAfterSundayFivePM) {
       <br/><strong>Shipping:</strong> $${deliveryFee.toFixed(2)}
       ${discountAmountFixed > 0 ? `<br/><strong>Discount:</strong> -$${discountAmountFixed.toFixed(2)}` : ""}
       <br/><strong>Total:</strong> $${total.toFixed(2)}<br/>`;
-// SWITCH TO PAYMENT QRr
-document.querySelector(".checkout-left").style.display = "none";
-document.getElementById("orderSummary").innerHTML = `
-  <div class="payment-card-modern">
-    <div class="countdown-timer" id="countdown">06:00</div>
-    <div class="store-name">artemisphnompenh</div>
-    <div class="price-label">$</div>
-    <div class="total-amount">${total.toFixed(2)}</div>
 
-    <div class="qr-wrapper" style="text-align:center;">
-      <p>Scan the QR to Pay with ABA</p>
-      <img src="./img/bank.jpg" alt="ABA QR Code" style="width:300px;height:auto;" />
-      <br><br>
-    
-    </div>
-    <div style="margin-top: 20px;">
-      <p>Send the proof of payment to this Telegram:</p>
-      <p><a href="https://t.me/Tmcartemis34" target="_blank">📩 @artemis_contact</a></p>
-      <button id="doneBtn" style="display:block;">✅ Done</button>
-    </div>
-  </div>`;
+    // Show payment QR
+    document.querySelector(".checkout-left").style.display = "none";
+    document.getElementById("orderSummary").innerHTML = `
+      <div class="payment-card-modern">
+        <div class="countdown-timer" id="countdown">06:00</div>
+        <div class="store-name">artemisphnompenh</div>
+        <div class="price-label">$</div>
+        <div class="total-amount">${total.toFixed(2)}</div>
+        <div class="qr-wrapper" style="text-align:center;">
+          <p>Scan the QR to Pay with ABA</p>
+          <img src="./img/bank.jpg" alt="ABA QR Code" style="width:300px;height:auto;" />
+        </div>
+        <div style="margin-top: 20px;">
+          <p>Send the proof of payment to this Telegram:</p>
+          <p><a href="https://t.me/Tmcartemis34" target="_blank">📩 @artemis_contact</a></p>
+          <button id="doneBtn" style="display:block;">✅ Done</button>
+        </div>
+      </div>`;
 
-document.getElementById("payByABA").addEventListener("click", () => {
-  const now = Date.now();
-  window.location.href = "abapay://";
+    // Trigger ABA app
+    document.getElementById("payByABA")?.addEventListener("click", () => {
+      const now = Date.now();
+      window.location.href = "abapay://";
+      setTimeout(() => {
+        if (Date.now() - now < 1200) {
+          alert("ABA app did not open. Please open ABA manually and scan the QR code.");
+        }
+      }, 1000);
+    });
 
-  setTimeout(() => {
-    if (Date.now() - now < 1200) {
-      alert("ABA app did not open. Please open ABA manually and scan the QR code.");
-    }
-  }, 1000);
-});
-
-
-
-
-
-
-    // START COUNTDOWN
+    // Start countdown
     let time = 360;
     const countdown = document.getElementById("countdown");
     const timer = setInterval(() => {
-      if (time <= 0) { clearInterval(timer); countdown.textContent = "00:00"; }
-      else {
+      if (time <= 0) {
+        clearInterval(timer);
+        countdown.textContent = "00:00";
+      } else {
         const min = String(Math.floor(time / 60)).padStart(2, "0");
         const sec = String(time % 60).padStart(2, "0");
         countdown.textContent = `${min}:${sec}`;
@@ -552,56 +527,52 @@ document.getElementById("payByABA").addEventListener("click", () => {
       }
     }, 1000);
 
-    // DONE BUTTON → SEND EMAIL + UPDATE STOCK
-    setTimeout(() => {
+    // Handle done button (after DOM is painted)
+    requestAnimationFrame(() => {
       const doneBtn = document.getElementById("doneBtn");
-      doneBtn.addEventListener("click", function () {
-        doneBtn.disabled = true;
-        doneBtn.innerHTML = "Sending... <span class='loader'></span>";
+      if (doneBtn) {
+        doneBtn.addEventListener("click", function () {
+          doneBtn.disabled = true;
+          doneBtn.innerHTML = "Sending... <span class='loader'></span>";
 
-        emailjs.send("service_kgp1log", "template_7rjrfvb", {
-          user_email: email,
-          user_name: `${firstName} ${lastName}`,
-          message_html: `
-            <strong>Email:</strong> ${email}<br/>
-            <strong>Name:</strong> ${firstName} ${lastName}<br/>
-            <strong>Instagram:</strong> ${instagram}<br/>
-            <strong>Address:</strong> ${address}<br/>
-            <strong>Phone:</strong> ${phone}<br/>
-            <strong>Region:</strong> ${region}<br/><br/>${orderHTML}`
-        }).then(() => {
-          alert("✅ Order sent successfully!");
+          emailjs.send("service_kgp1log", "template_7rjrfvb", {
+            user_email: email,
+            user_name: `${firstName} ${lastName}`,
+            message_html: `
+              <strong>Email:</strong> ${email}<br/>
+              <strong>Name:</strong> ${firstName} ${lastName}<br/>
+              <strong>Instagram:</strong> ${instagram}<br/>
+              <strong>Address:</strong> ${address}<br/>
+              <strong>Phone:</strong> ${phone}<br/>
+              <strong>Region:</strong> ${region}<br/><br/>${orderHTML}`
+          }).then(() => {
+            alert("✅ Order sent successfully!");
 
-          // UPDATE STOCK
-          const cartData = JSON.parse(localStorage.getItem("cartData") || "[]");
-          const stockData = JSON.parse(localStorage.getItem("artemisStock") || "{}");
+            const cartData = JSON.parse(localStorage.getItem("cartData") || "[]");
+            const stockData = JSON.parse(localStorage.getItem("artemisStock") || "{}");
+            cartData.forEach(item => {
+              const product = item.title;
+              const size = item.size || "-";
+              const qty = item.quantity || 0;
+              if (stockData[product] && stockData[product][size] !== undefined) {
+                stockData[product][size] -= qty;
+                if (stockData[product][size] < 0) stockData[product][size] = 0;
+              }
+            });
 
-          cartData.forEach(item => {
-            const product = item.title;
-            const size = item.size || "-";
-            const qty = item.quantity || 0;
-            if (stockData[product] && stockData[product][size] !== undefined) {
-              stockData[product][size] -= qty;
-              if (stockData[product][size] < 0) stockData[product][size] = 0;
-            }
+            localStorage.setItem("artemisStock", JSON.stringify(stockData));
+            localStorage.removeItem("cartData");
+            window.location.href = "thankyou.html";
+          }).catch((error) => {
+            console.error("❌ EmailJS send failed:", error);
+            alert("❌ Failed to send. Check console for details.");
+            doneBtn.disabled = false;
+            doneBtn.innerHTML = "✅ Done";
           });
-
-          localStorage.setItem("artemisStock", JSON.stringify(stockData));
-          localStorage.removeItem("cartData");
-
-          window.location.href = "thankyou.html";
-        }).catch((error) => {
-          console.error("❌ EmailJS send failed:", error);
-          alert("❌ Failed to send. Check console for details.");
-          doneBtn.disabled = false;
-          doneBtn.innerHTML = "✅ Done";
         });
-      });
-    }, 300);
+      }
+    });
   });
-
-  // Call once on page load
-  renderOrderSummary();
 });
 </script>
 
