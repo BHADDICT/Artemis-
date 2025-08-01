@@ -532,7 +532,7 @@ function openABAApp() {
   // Try to open ABA app
   window.location.href = abaLink;
 
-  // Fallback: If app doesn't open, show a message after a
+  // Fallback message if app doesn’t open
   setTimeout(() => {
     const elapsed = Date.now() - now;
     if (elapsed < 1200) {
