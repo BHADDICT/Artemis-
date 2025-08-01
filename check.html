@@ -384,43 +384,43 @@ window.addEventListener("load", function () {
     // cambodiaTime.setHours(22, 10, 0, 0);
     // cambodiaTime.setDate(cambodiaTime.getDate() - ((cambodiaTime.getDay() + 2) % 7));
     // === END TESTING ===
+const day = cambodiaTime.getDay(); // Sunday=0, Monday=1, ..., Saturday=6
+const hour = cambodiaTime.getHours();
+const minute = cambodiaTime.getMinutes();
 
-    const day = cambodiaTime.getDay(); // Sunday=0, Friday=5
-    const hour = cambodiaTime.getHours();
-    const minute = cambodiaTime.getMinutes();
+// Disable promo code after Sunday 5:00 PM Cambodia time
+const isAfterSundayFivePM = day === 0 && (hour > 17 || (hour === 17 && minute >= 0));
 
-    // Disable promo code after Friday 10:20 PM Cambodia time
-    const isAfterFridayTenTwenty = day === 5 && (hour > 22 || (hour === 22 && minute >= 20));
+if (isAfterSundayFivePM) {
+  applyBtn.disabled = true;
+  applyBtn.title = "Promo codes are disabled after 5:00 PM on Sundays (Cambodia time).";
+  promoInput.disabled = true;
+} else {
+  applyBtn.disabled = false;
+  promoInput.disabled = false;
 
-    if (isAfterFridayTenTwenty) {
-      applyBtn.disabled = true;
-      applyBtn.title = "Promo codes are disabled after 10:20 PM on Fridays (Cambodia time).";
-      promoInput.disabled = true;
-    } else {
-      applyBtn.disabled = false;
-      promoInput.disabled = false;
+  // Remove old listeners safely by replacing the button element
+  const newApplyBtn = applyBtn.cloneNode(true);
+  applyBtn.parentNode.replaceChild(newApplyBtn, applyBtn);
 
-      // Remove old listeners safely by replacing the button element
-      const newApplyBtn = applyBtn.cloneNode(true);
-      applyBtn.parentNode.replaceChild(newApplyBtn, applyBtn);
-
-      newApplyBtn.addEventListener("click", function () {
-        if (isAfterFridayTenTwenty) {
-          alert("Promo codes cannot be applied after 10:20 PM on Fridays (Cambodia time).");
-          return;
-        }
-        const code = promoInput.value.trim().toLowerCase();
-
-        if (code === "minus5") {
-          discountAmountFixed = 5;
-          alert("Promo applied! $5 discount.");
-        } else {
-          discountAmountFixed = 0;
-          alert("Invalid promo code.");
-        }
-        renderOrderSummary();
-      });
+  newApplyBtn.addEventListener("click", function () {
+    if (isAfterSundayFivePM) {
+      alert("Promo codes cannot be applied after 5:00 PM on Sundays (Cambodia time).");
+      return;
     }
+    const code = promoInput.value.trim().toLowerCase();
+
+    if (code === "minus5") {
+      discountAmountFixed = 5;
+      alert("Promo applied! $5 discount.");
+    } else {
+      discountAmountFixed = 0;
+      alert("Invalid promo code.");
+    }
+    renderOrderSummary();
+  });
+}
+
   }
 
   // call once on page load
