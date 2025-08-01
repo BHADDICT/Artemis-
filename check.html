@@ -514,7 +514,12 @@ document.getElementById("orderSummary").innerHTML = `
       <p>Scan the QR to Pay with ABA</p>
       <img src="./img/bank.jpg" alt="ABA QR Code" style="width:300px;height:auto;" />
       <br><br>
-      <button onclick="openABAApp()" style="padding:10px 20px; font-size:16px;">Pay by ABA</button>
+      <a href="abapay://scanqr" style="text-decoration:none;">
+        <button style="padding:10px 20px; font-size:16px; cursor:pointer;">Pay by ABA</button>
+      </a>
+      <p style="margin-top:15px; font-style: italic; color: #555;">
+        If ABA app does not open, please open it manually and scan the QR code above.
+      </p>
     </div>
 
     <div style="margin-top: 20px;">
@@ -524,22 +529,9 @@ document.getElementById("orderSummary").innerHTML = `
     </div>
   </div>`;
 
+
 // Function to try opening the ABA app
-function openABAApp() {
-  const now = Date.now();
-  const abaLink = "abapay://scanqr";
 
-  // Try to open ABA app
-  window.location.href = abaLink;
-
-  // Fallback message if app doesn’t open
-  setTimeout(() => {
-    const elapsed = Date.now() - now;
-    if (elapsed < 1200) {
-      alert("It looks like ABA didn't open. Please open the ABA app manually and scan the QR code.");
-    }
-  }, 1000);
-}
 
 
     // START COUNTDOWN
