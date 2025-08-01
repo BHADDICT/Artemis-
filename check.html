@@ -336,7 +336,7 @@ window.addEventListener("load", function () {
   emailjs.init("z38jUWYxRvfJS_RC8"); // ✅ Make sure this is YOUR EmailJS public key
 
   const deliveryFee = 2.0;
-  let discountRate = 0;
+  let discountAmountFixed = 0;
 
   function renderOrderSummary() {
     const cart = JSON.parse(localStorage.getItem("cartData")) || [];
@@ -361,13 +361,13 @@ window.addEventListener("load", function () {
         </div>`;
     });
 
-    const discountAmount = subtotal * discountRate;
-    const total = subtotal - discountAmount + deliveryFee;
+    let total = subtotal - discountAmountFixed + deliveryFee;
+    if (total < 0) total = 0;
 
     summary.innerHTML += `
       <div class="summary">
         <div>Subtotal: $${subtotal.toFixed(2)}</div>
-        ${discountRate > 0 ? `<div>Discount: -$${discountAmount.toFixed(2)}</div>` : ""}
+        ${discountAmountFixed > 0 ? `<div>Discount: -$${discountAmountFixed.toFixed(2)}</div>` : ""}
         <div>Shipping: $${deliveryFee.toFixed(2)}</div>
         <div><strong>Total: $${total.toFixed(2)}</strong></div>
       </div>
@@ -375,13 +375,19 @@ window.addEventListener("load", function () {
       <button class="apply-btn" id="applyPromoBtn">Apply Promo</button>`;
 
     document.getElementById("applyPromoBtn").addEventListener("click", function () {
-      const code = document.getElementById("promoCodeInput").value.trim();
-      discountRate = code === "1010" ? 0.1 : 0;
-      alert(discountRate > 0 ? "Promo applied! 10% discount." : "Invalid promo code.");
+      const code = document.getElementById("promoCodeInput").value.trim().toLowerCase();
+      if (code === "minus5") {
+        discountAmountFixed = 5;
+        alert("Promo applied! $5 discount.");
+      } else {
+        discountAmountFixed = 0;
+        alert("Invalid promo code.");
+      }
       renderOrderSummary();
     });
   }
 
+  // rest of your script stays the same
   document.getElementById("regionSelect").addEventListener("change", function () {
     document.getElementById("provinceInputContainer").style.display = this.value === "pr" ? "block" : "none";
   });
@@ -443,7 +449,7 @@ window.addEventListener("load", function () {
       subtotal += itemTotal;
       rows += `<tr><td>${item.title}</td><td>${item.size || '-'}</td><td>${item.quantity}</td><td>$${itemTotal.toFixed(2)}</td></tr>`;
     });
-    const total = subtotal + deliveryFee;
+    const total = Math.max(subtotal - discountAmountFixed + deliveryFee, 0);
     const orderHTML = `
       <table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse;width:100%;max-width:600px;">
         <thead style="background:#eee;">
@@ -453,6 +459,7 @@ window.addEventListener("load", function () {
       </table>
       <br/><strong>Subtotal:</strong> $${subtotal.toFixed(2)}
       <br/><strong>Shipping:</strong> $${deliveryFee.toFixed(2)}
+      ${discountAmountFixed > 0 ? `<br/><strong>Discount:</strong> -$${discountAmountFixed.toFixed(2)}` : ""}
       <br/><strong>Total:</strong> $${total.toFixed(2)}<br/>`;
 
     // SWITCH TO PAYMENT QR SCREEN
@@ -537,6 +544,7 @@ window.addEventListener("load", function () {
   renderOrderSummary();
 });
 </script>
+
 
 
 </body>
