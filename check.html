@@ -334,48 +334,71 @@
 <script>
 window.addEventListener("load", function () {
   emailjs.init("z38jUWYxRvfJS_RC8"); // ✅ Make sure this is YOUR EmailJS public key
+const deliveryFee = 2.0;
+let discountAmountFixed = 0;
 
-  const deliveryFee = 2.0;
-  let discountAmountFixed = 0;
+function renderOrderSummary() {
+  const cart = JSON.parse(localStorage.getItem("cartData")) || [];
+  const summary = document.getElementById("orderSummary");
+  summary.innerHTML = "";
+  let subtotal = 0;
 
-  function renderOrderSummary() {
-    const cart = JSON.parse(localStorage.getItem("cartData")) || [];
-    const summary = document.getElementById("orderSummary");
-    summary.innerHTML = "";
-    let subtotal = 0;
+  if (cart.length === 0) {
+    summary.innerHTML = "<p>Your cart is empty.</p>";
+    return;
+  }
 
-    if (cart.length === 0) {
-      summary.innerHTML = "<p>Your cart is empty.</p>";
-      return;
-    }
-
-    cart.forEach(item => {
-      subtotal += item.price * item.quantity;
-      summary.innerHTML += `
-        <div class="item">
-          <img src="${item.img}" alt="${item.title}" />
-          <div style="flex:1;">
-            <strong>${item.title}</strong> (Size: ${item.size || '-'}) x${item.quantity}
-            <div>$${(item.price * item.quantity).toFixed(2)}</div>
-          </div>
-        </div>`;
-    });
-
-    let total = subtotal - discountAmountFixed + deliveryFee;
-    if (total < 0) total = 0;
-
+  cart.forEach(item => {
+    subtotal += item.price * item.quantity;
     summary.innerHTML += `
-      <div class="summary">
-        <div>Subtotal: $${subtotal.toFixed(2)}</div>
-        ${discountAmountFixed > 0 ? `<div>Discount: -$${discountAmountFixed.toFixed(2)}</div>` : ""}
-        <div>Shipping: $${deliveryFee.toFixed(2)}</div>
-        <div><strong>Total: $${total.toFixed(2)}</strong></div>
-      </div>
-      <input type="text" id="promoCodeInput" class="discount-code" placeholder="Promo code" />
-      <button class="apply-btn" id="applyPromoBtn">Apply Promo</button>`;
+      <div class="item">
+        <img src="${item.img}" alt="${item.title}" />
+        <div style="flex:1;">
+          <strong>${item.title}</strong> (Size: ${item.size || '-'}) x${item.quantity}
+          <div>$${(item.price * item.quantity).toFixed(2)}</div>
+        </div>
+      </div>`;
+  });
 
-    document.getElementById("applyPromoBtn").addEventListener("click", function () {
-      const code = document.getElementById("promoCodeInput").value.trim().toLowerCase();
+  let total = subtotal - discountAmountFixed + deliveryFee;
+  if (total < 0) total = 0;
+
+  summary.innerHTML += `
+    <div class="summary">
+      <div>Subtotal: $${subtotal.toFixed(2)}</div>
+      ${discountAmountFixed > 0 ? `<div>Discount: -$${discountAmountFixed.toFixed(2)}</div>` : ""}
+      <div>Shipping: $${deliveryFee.toFixed(2)}</div>
+      <div><strong>Total: $${total.toFixed(2)}</strong></div>
+    </div>
+    <input type="text" id="promoCodeInput" class="discount-code" placeholder="Promo code" />
+    <button class="apply-btn" id="applyPromoBtn">Apply Promo</button>`;
+
+  const applyBtn = document.getElementById("applyPromoBtn");
+  const promoInput = document.getElementById("promoCodeInput");
+
+  // TESTING: Hardcoded Cambodia time to Friday 09:50
+  const cambodiaTime = new Date();
+  cambodiaTime.setHours(9, 50, 0, 0); // 09:50:00
+  cambodiaTime.setDate(cambodiaTime.getDate() - ((cambodiaTime.getDay() + 2) % 7)); // Set to Friday
+
+  const isSundayAfter5pm = cambodiaTime.getDay() === 0 && cambodiaTime.getHours() >= 17;
+
+  if (isSundayAfter5pm) {
+    applyBtn.disabled = true;
+    applyBtn.title = "Promo codes are disabled after 5 PM on Sundays (Cambodia time).";
+    promoInput.disabled = true;
+  } else {
+    applyBtn.disabled = false;
+    promoInput.disabled = false;
+
+    applyBtn.addEventListener("click", function () {
+      const code = promoInput.value.trim().toLowerCase();
+
+      if (isSundayAfter5pm) {
+        alert("Promo codes cannot be applied after 5 PM on Sundays (Cambodia time).");
+        return;
+      }
+
       if (code === "minus5") {
         discountAmountFixed = 5;
         alert("Promo applied! $5 discount.");
@@ -386,6 +409,8 @@ window.addEventListener("load", function () {
       renderOrderSummary();
     });
   }
+}
+
 
   // rest of your script stays the same
   document.getElementById("regionSelect").addEventListener("change", function () {
