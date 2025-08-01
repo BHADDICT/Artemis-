@@ -501,7 +501,7 @@ if (isAfterSundayFivePM) {
       <br/><strong>Shipping:</strong> $${deliveryFee.toFixed(2)}
       ${discountAmountFixed > 0 ? `<br/><strong>Discount:</strong> -$${discountAmountFixed.toFixed(2)}` : ""}
       <br/><strong>Total:</strong> $${total.toFixed(2)}<br/>`;
-// SWITCH TO PAYMENT Qr
+// SWITCH TO PAYMENT QR
 document.querySelector(".checkout-left").style.display = "none";
 document.getElementById("orderSummary").innerHTML = `
   <div class="payment-card-modern">
@@ -514,9 +514,7 @@ document.getElementById("orderSummary").innerHTML = `
       <p>Scan the QR to Pay with ABA</p>
       <img src="./img/bank.jpg" alt="ABA QR Code" style="width:300px;height:auto;" />
       <br><br>
-      <a href="abapay://scanqr" style="text-decoration:none;">
-        <button style="padding:10px 20px; font-size:16px; cursor:pointer;">Pay by ABA</button>
-      </a>
+      <button id="payByABA" style="padding:10px 20px; font-size:16px; cursor:pointer;">Pay by ABA</button>
       <p style="margin-top:15px; font-style: italic; color: #555;">
         If ABA app does not open, please open it manually and scan the QR code above.
       </p>
@@ -528,6 +526,17 @@ document.getElementById("orderSummary").innerHTML = `
       <button id="doneBtn" style="display:block;">✅ Done</button>
     </div>
   </div>`;
+
+document.getElementById("payByABA").addEventListener("click", () => {
+  const now = Date.now();
+  window.location.href = "abapay://scanqr";
+
+  setTimeout(() => {
+    if (Date.now() - now < 1200) {
+      alert("ABA app did not open. Please open ABA manually and scan the QR code.");
+    }
+  }, 1000);
+});
 
 
 // Function to try opening the ABA app
