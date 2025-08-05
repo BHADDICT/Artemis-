@@ -227,7 +227,7 @@ function saveStock() {
   alert("✅ Stock saved successfully.");
 }
 
-// Auto-refresh when stock updates in another tab
+
 window.addEventListener("storage", function(event) {
   if (event.key === "artemisStock") {
     location.reload();
