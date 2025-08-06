@@ -370,43 +370,18 @@ document.addEventListener("DOMContentLoaded", function () {
         <div>Shipping: $${deliveryFee.toFixed(2)}</div>
         <div><strong>Total: $${total.toFixed(2)}</strong></div>
       </div>
-      <input type="text" id="promoCodeInput" class="discount-code" placeholder="Promo code" />
-      <button class="apply-btn" id="applyPromoBtn">Apply Promo</button>`;
+      <input type="text" id="promoCodeInput" class="discount-code" placeholder="Promo code" disabled />
+      <button class="apply-btn" id="applyPromoBtn" disabled>Apply Promo</button>
+    `;
 
     const applyBtn = document.getElementById("applyPromoBtn");
     const promoInput = document.getElementById("promoCodeInput");
 
-    // Promo code time logic
-    const cambodiaTime = new Date();
-    const day = cambodiaTime.getDay();
-    const hour = cambodiaTime.getHours();
-    const minute = cambodiaTime.getMinutes();
-    const isAfterSundayFivePM = day === 0 && (hour > 17 || (hour === 17 && minute >= 0));
-
-    if (isAfterSundayFivePM) {
-      applyBtn.disabled = true;
-      applyBtn.title = "Promo codes are disabled after 5:00 PM on Sundays (Cambodia time).";
-      promoInput.disabled = true;
-    } else {
-      applyBtn.disabled = false;
-      promoInput.disabled = false;
-
-      const newApplyBtn = applyBtn.cloneNode(true);
-      applyBtn.parentNode.replaceChild(newApplyBtn, applyBtn);
-
-      newApplyBtn.addEventListener("click", function () {
-        const code = promoInput.value.trim().toLowerCase();
-        if (code === "minus5") {
-          discountAmountFixed = 5;
-          alert("Promo applied! $5 discount.");
-        } else {
-          discountAmountFixed = 0;
-          alert("Invalid promo code.");
-        }
-        renderOrderSummary();
-      });
-    }
-  }
+    // Disable promo input and button unconditionally (no promo logic)
+    applyBtn.disabled = true;
+    promoInput.disabled = true;
+    applyBtn.title = "Promo codes are disabled.";
+  } // <-- Close renderOrderSummary function here
 
   // Call on load
   renderOrderSummary();
@@ -527,7 +502,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }, 1000);
 
-    // Handle done button (after DOM is painted)
+    // Handle done button (after DOM is painte
     requestAnimationFrame(() => {
       const doneBtn = document.getElementById("doneBtn");
       if (doneBtn) {
