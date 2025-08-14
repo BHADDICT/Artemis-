@@ -400,12 +400,34 @@
   display: none;
   font-size: 20px;
   background: none;
-  color: #ffdb70;
+  color: #af8506;
   border: none;
   cursor: pointer;
   font-family: 'Press Start 2P', cursive;
 }
+.arrow {
+  position: absolute;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: yellow;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
 
+.left-arrow {
+  left: 10px;
+}
+
+.right-arrow {
+  right: 10px;
+}
+
+.arrow:hover {
+  color: white;
+}
 .mobile-nav {
   position: fixed;
   top: 0;
@@ -622,15 +644,15 @@
 <body>
 <header>
   <nav>
-    <button class="hamburger" id="hamburger-btn">☰</button>
-    <span class="logo-header">
-      <img src="./img/poopcolor.png" alt="ARTEMIS Logo">
+   <button class="hamburger" id="hamburger-btn" style="position: relative; left: -20px;">☰</button>
+
+    <span class="logo-header" style="position: relative; left: -20px;">
+      <img src="./img/pop.png" alt="ARTEMIS Logo" >
     </span>
    <a class="desktop-menu" href="index.html" style="text-decoration: none; color: white;">MAIN MENU</a>
-
     <span class="desktop-menu">GUIDE</span>
     <span class="desktop-menu active">
-      <img src="./img/poopcolor.png" alt="ARTEMIS" style="height: 10em; vertical-align: middle;">
+      <img src="./img/pop.png" alt="ARTEMIS" style="height: 10em; vertical-align: middle;">
     </span>
     <span class="desktop-menu">QUEST</span>
     <span class="desktop-menu">WORLD MAP</span>
@@ -651,49 +673,59 @@
   <div class="merchant-panel">
     <h2>ARTEMIS</h2>
     <div class="items-grid">
- <div class="item" 
-      data-title="Artemis Visca barca" 
-      data-subtitle="ARTEMIS Ⓐ"
-      data-description="Cut from shadow and light. Built for speed, worn for style."
-      data-features='["Custom Pattern and Fitting", "Artemis Label Tag", "300GSM", "Embroidery, Rubber Print & Discharge Print", "Polo Collar"]'
-      data-passive="⚡ Speed +9%"
-      data-price="$30.00"
-      data-img="./img/jer.png"
-       data-hover="./img/jerback.png"
-       data-soldout='["XL"]'>
-      <img src="./img/jer.png">
-    </div>
-     <div class="item" 
-      data-title="Artemis Hala Madrid" 
-      data-subtitle="ARTEMIS Ⓐ"
-      data-description="Cut from shadow and light. Built for speed, worn for style."
-      data-features='["Custom Pattern and Fitting", "Artemis Label Tag", "300GSM", "Embroidery, Rubber Print & Discharge Print", "Polo Collar"]'
 
-      data-passive="⚡ Speed +9%"
-      data-price="$32.00"
-      data-img="./img/jerwhitefront.png"
-       data-hover="./img/jerwhite.png"
-        data-soldout='["XL"]'>
-      <img src="./img/jerwhitefront.png">
-    </div>
       <div class="item" 
-      data-title="ARTEMISMADE HOODIE" 
-      data-subtitle="ARTEMIS Ⓐ"
-      data-description="Cut from shadow and light. Built for speed, worn for style."
-   data-features='["400GSM", "Double Face Fabric", "Discharge Print", "Artemis Label Tag", "Boxy Fitted"]'
+        data-title="Artemis Visca barca" 
+        data-subtitle="ARTEMIS Ⓐ"
+        data-description="Cut from shadow and light. Built for speed, worn for style."
+        data-features='["Custom Pattern and Fitting", "Artemis Label Tag", "300GSM", "Embroidery, Rubber Print & Discharge Print", "Polo Collar"]'
+        data-passive="⚡ Speed +9%"
+        data-price="$30.00"
+        data-img="./img/jer.png"
+        data-hover="./img/jerback.png"
+        data-extra1="./img/pho15.JPEG"
+        data-extra2="./img/jer_detail.png"
+        data-soldout='["XL"]'>
+        <img src="./img/jer.png">
+      </div>
 
+      <div class="item" 
+        data-title="Artemis Hala Madrid" 
+        data-subtitle="ARTEMIS Ⓐ"
+        data-description="Cut from shadow and light. Built for speed, worn for style."
+        data-features='["Custom Pattern and Fitting", "Artemis Label Tag", "300GSM", "Embroidery, Rubber Print & Discharge Print", "Polo Collar"]'
+        data-passive="⚡ Speed +9%"
+        data-price="$32.00"
+        data-img="./img/jerwhitefront.png"
+        data-hover="./img/jerwhite.png"
+      data-extra1="./img/pho16.JPEG"
+        data-extra2="./img/jerwhite_detail.png"
+        data-soldout='["XL"]'>
+        <img src="./img/jerwhitefront.png">
+      </div>
 
-      data-passive="⚡ Speed +9%"
-      data-price="$32.00"
-      data-img="./img/pro3.png"
-       data-hover="./img/pro2.png">
-      <img src="./img/pro3.png">
-    </div>
+      <div class="item" 
+        data-title="ARTEMISMADE HOODIE" 
+        data-subtitle="ARTEMIS Ⓐ"
+        data-description="Cut from shadow and light. Built for speed, worn for style."
+        data-features='["400GSM", "Double Face Fabric", "Discharge Print", "Artemis Label Tag", "Boxy Fitted"]'
+        data-passive="⚡ Speed +9%"
+        data-price="$32.00"
+        data-img="./img/pro3.png"
+        data-hover="./img/pro2.png"
+       data-extra1="./img/pho17.JPG"
+        data-extra2="./img/pro3_detail.png">
+        <img src="./img/pro3.png">
+      </div>
+
     </div>
   </div>
 
-  <div class="character-panel" data-img="./img/pro4.png" data-hover="./img/pro5.png">
-    <img src="./img/pro4.png" alt="Character" class="character-img" />
+  <!-- Character Panel with arrows -->
+  <div class="character-panel">
+    <button class="arrow left-arrow">❮</button>
+    <img src="./img/pro4.png" alt="ARTEMIS" class="character-img" />
+    <button class="arrow right-arrow">❯</button>
   </div>
 
   <div class="product-panel">
@@ -718,7 +750,6 @@
     <div class="price">$25.00</div>
     <div class="buttons">
       <button class="add-cart-btn">Add to cart</button>
-      
     </div>
   </div>
 </main>
@@ -757,85 +788,122 @@
   <div class="speech-bubble hidden" id="catBubble">Hello oun oun</div>
 </div>
 <script>
-// Mark sold-out sizes dynamically for Item 1
 document.addEventListener('DOMContentLoaded', () => {
+  let currentImages = [];
+  let currentIndex = 0;
+
+  // ------------------------------
+  // Product image slider
+  // ------------------------------
+  document.querySelectorAll('.item').forEach(item => {
+    item.addEventListener('click', () => {
+      currentImages = [
+        item.dataset.img,
+        item.dataset.hover,
+        item.dataset.extra1,
+        item.dataset.extra2
+      ].filter(Boolean);
+
+      currentIndex = 0;
+      updateImage();
+    });
+  });
+
+  document.querySelector('.left-arrow')?.addEventListener('click', () => {
+    if (!currentImages.length) return;
+    currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+    updateImage();
+  });
+
+  document.querySelector('.right-arrow')?.addEventListener('click', () => {
+    if (!currentImages.length) return;
+    currentIndex = (currentIndex + 1) % currentImages.length;
+    updateImage();
+  });
+
+  function updateImage() {
+    const imgEl = document.querySelector('.character-img');
+    if (imgEl) imgEl.src = currentImages[currentIndex];
+  }
+
+  // ------------------------------
+  // Sold-out size marking
+  // ------------------------------
   const sizeButtons = document.querySelectorAll('.size-btn');
   const items = document.querySelectorAll('.items-grid .item');
 
   items.forEach(item => {
     item.addEventListener('click', () => {
-      // Clear all size buttons before re-applying sold out
       sizeButtons.forEach(btn => {
-        btn.classList.remove('sold-out');
-        btn.classList.remove('disabled');
+        btn.classList.remove('sold-out', 'disabled');
       });
 
-      // Check if this item has sold out sizes in data-soldout
       const soldOutSizes = JSON.parse(item.dataset.soldout || '[]');
-
-      // Apply sold-out styling and disable for matching sizes
       sizeButtons.forEach(btn => {
         if (soldOutSizes.includes(btn.textContent.trim())) {
-          btn.classList.add('sold-out');
-          btn.classList.add('disabled');
+          btn.classList.add('sold-out', 'disabled');
         }
       });
     });
   });
 
-  // Trigger the click on the first item to apply its sold-out state immediately
   const firstItem = document.querySelector('.items-grid .item');
   if (firstItem) firstItem.click();
-});
-</script>
 
-<script>
-  // Mobile menu toggles
+  // ------------------------------
+  // Mobile menu toggle
+  // ------------------------------
   const hamburger = document.getElementById("hamburger-btn");
   const mobileNav = document.getElementById("mobile-nav");
   const closeBtn = document.getElementById("close-btn");
-  hamburger.addEventListener("click", () => { mobileNav.classList.add("show"); });
-  closeBtn.addEventListener("click", () => { mobileNav.classList.remove("show"); });
-</script>
 
-<script>
-  // Pixel cat bubble animation on Add to cart
+  hamburger?.addEventListener("click", () => { mobileNav?.classList.add("show"); });
+  closeBtn?.addEventListener("click", () => { mobileNav?.classList.remove("show"); });
+
+  // ------------------------------
+  // Pixel cat animation
+  // ------------------------------
   const catBubble = document.querySelector('.speech-bubble');
   const pixelCat = document.querySelector('.pixel-cat-static');
   const addCartBtn = document.querySelector('.add-cart-btn');
 
-  const bubbleOriginalRight = parseFloat(getComputedStyle(catBubble).right);
-  const catOriginalRight = parseFloat(getComputedStyle(pixelCat).right);
-  const shiftAmount = window.innerWidth * 0.6;
+  if (catBubble && pixelCat && addCartBtn) {
+    const bubbleOriginalRight = parseFloat(getComputedStyle(catBubble).right);
+    const catOriginalRight = parseFloat(getComputedStyle(pixelCat).right);
+    const shiftAmount = window.innerWidth * 0.6;
 
-  addCartBtn.addEventListener('click', () => {
-    catBubble.textContent = 'thank you oun ❤️';
-    catBubble.style.opacity = '1';
-    catBubble.style.right = (bubbleOriginalRight + shiftAmount) + 'px';
-    pixelCat.style.right = (catOriginalRight + shiftAmount) + 'px';
+    addCartBtn.addEventListener('click', () => {
+      catBubble.textContent = 'thank you oun ❤️';
+      catBubble.style.opacity = '1';
+      catBubble.style.right = (bubbleOriginalRight + shiftAmount) + 'px';
+      pixelCat.style.right = (catOriginalRight + shiftAmount) + 'px';
 
-    setTimeout(() => {
-      catBubble.style.opacity = '0';
       setTimeout(() => {
-        catBubble.textContent = 'hello oun oun..';
-        catBubble.style.right = bubbleOriginalRight + 'px';
-        pixelCat.style.right = catOriginalRight + 'px';
-      }, 500);
-    }, 2000);
-  });
+        catBubble.style.opacity = '0';
+        setTimeout(() => {
+          catBubble.textContent = 'hello oun oun..';
+          catBubble.style.right = bubbleOriginalRight + 'px';
+          pixelCat.style.right = catOriginalRight + 'px';
+        }, 500);
+      }, 2000);
+    });
+  }
 
+  // ------------------------------
   // Size button toggle
-  document.querySelectorAll('.size-btn').forEach(btn => {
+  // ------------------------------
+  sizeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       if (!btn.classList.contains('disabled')) {
-        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+        sizeButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
       }
     });
   });
-</script>
 
-<script>
+  // ------------------------------
+  // Cart system
+  // ------------------------------
   const cartItems = [];
   const cartCount = document.getElementById("cart-count");
   const cartPanel = document.getElementById("cartPanel");
@@ -883,12 +951,11 @@ document.addEventListener('DOMContentLoaded', () => {
     cartPanel.style.display = 'block';
   }
 
-  // Add to Cart button handler
-  document.querySelector('.add-cart-btn').addEventListener('click', () => {
-    const title = document.querySelector('.product-title').textContent;
-    const priceStr = document.querySelector('.price').textContent.replace("$", "");
+  addCartBtn?.addEventListener('click', () => {
+    const title = document.querySelector('.product-title')?.textContent || '';
+    const priceStr = document.querySelector('.price')?.textContent.replace("$", "") || '0';
     const price = parseFloat(priceStr);
-    const img = document.querySelector('.character-img').src;
+    const img = document.querySelector('.character-img')?.src || '';
     const selectedSizeBtn = document.querySelector('.size-btn.active');
     const size = selectedSizeBtn ? selectedSizeBtn.textContent : "N/A";
 
@@ -909,17 +976,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCart();
   });
 
-  // Cart icon click shows cart
-  document.querySelector('.cart-icon').addEventListener('click', () => {
-    renderCart();
-  });
-
-  // Close cart button
-  document.querySelector('.cart-close-btn').addEventListener('click', () => {
+  document.querySelector('.cart-icon')?.addEventListener('click', renderCart);
+  document.querySelector('.cart-close-btn')?.addEventListener('click', () => {
     cartPanel.style.display = 'none';
   });
 
-  // Cart quantity buttons & remove event delegation
   cartItemsContainer.addEventListener('click', (e) => {
     const index = parseInt(e.target.dataset.index);
     if (e.target.classList.contains('remove-btn')) {
@@ -940,8 +1001,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Checkout button: Save cart to localStorage and go to checkout.html
-  document.querySelector('.checkout-btn').addEventListener('click', () => {
+  document.querySelector('.checkout-btn')?.addEventListener('click', () => {
     if (cartItems.length === 0) {
       alert("Your cart is empty!");
       return;
@@ -949,76 +1009,48 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('cartData', JSON.stringify(cartItems));
     window.location.href = 'check.html';
   });
-</script>
 
-<script>
-  // Image hover swap for items grid
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.items-grid .item img').forEach(img => {
-      const item = img.closest('.item');
-      const originalSrc = item.dataset.img;
-      const hoverSrc = item.dataset.hover;
+  // ------------------------------
+  // Hover swap for product grid
+  // -----------------------------
 
-      img.addEventListener('mouseenter', () => {
-        if (hoverSrc) img.src = hoverSrc;
-      });
+  document.querySelectorAll('.items-grid .item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelector('.product-title').textContent = item.dataset.title || '';
+      document.querySelector('.subtitle').textContent = item.dataset.subtitle || '';
 
-      img.addEventListener('mouseleave', () => {
-        if (originalSrc) img.src = originalSrc;
-      });
+      const descriptionEl = document.querySelector('.description');
+      if (descriptionEl) {
+        descriptionEl.textContent = item.dataset.description || '';
+      }
+
+      const featuresList = document.querySelector('.features');
+      if (featuresList) {
+        featuresList.innerHTML = '';
+        const features = JSON.parse(item.dataset.features || '[]');
+        features.forEach(f => {
+          const li = document.createElement('li');
+          li.textContent = f;
+          featuresList.appendChild(li);
+        });
+      }
+
+      document.querySelector('.passive').textContent = item.dataset.passive || '';
+      document.querySelector('.price').textContent = item.dataset.price || '';
+
+      if (charImg && item.dataset.img) {
+        charImg.src = item.dataset.img;
+        charPanel.dataset.img = item.dataset.img;
+        charPanel.dataset.hover = item.dataset.hover || item.dataset.img;
+      }
     });
-
-    const charPanel = document.querySelector('.character-panel');
-    const charImg = charPanel.querySelector('.character-img');
-
-    charImg.addEventListener('mouseenter', () => {
-      const currentHover = charPanel.dataset.hover || charPanel.dataset.img;
-      if (currentHover) charImg.src = currentHover;
-    });
-
-    charImg.addEventListener('mouseleave', () => {
-      const currentImg = charPanel.dataset.img;
-      if (currentImg) charImg.src = currentImg;
-    });
-
-   
-    document.querySelectorAll('.items-grid .item').forEach(item => {
-      item.addEventListener('click', () => {
-        document.querySelector('.product-title').textContent = item.dataset.title || '';
-        document.querySelector('.subtitle').textContent = item.dataset.subtitle || '';
-
-        const descriptionEl = document.querySelector('.description');
-        if (descriptionEl) {
-          descriptionEl.textContent = item.dataset.description || '';
-        }
-
-        const featuresList = document.querySelector('.features');
-        if (featuresList) {
-          featuresList.innerHTML = '';
-          const features = JSON.parse(item.dataset.features || '[]');
-          features.forEach(f => {
-            const li = document.createElement('li');
-            li.textContent = f;
-            featuresList.appendChild(li);
-          });
-        }
-
-        document.querySelector('.passive').textContent = item.dataset.passive || '';
-        document.querySelector('.price').textContent = item.dataset.price || '';
-
-        if (charImg && item.dataset.img) {
-          charImg.src = item.dataset.img;
-          charPanel.dataset.img = item.dataset.img;
-          charPanel.dataset.hover = item.dataset.hover || item.dataset.img;
-        }
-      });
-    });
-
-    // Auto-click first item on load
-    const firstItem = document.querySelector('.items-grid .item');
-    if (firstItem) firstItem.click();
   });
+
+  if (firstItem) firstItem.click();
+});
 </script>
+
+
 
 </body>
 </html>
